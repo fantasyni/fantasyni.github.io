@@ -47,7 +47,7 @@
         </ul>
         <img id="logo" src="/images/logo.png">
         <h1>bearcat</h1>
-        <p class="sub">Magic, self-described javaScript objects build up elastic, maintainable javaScript applications</p>
+        <p class="sub">Magic, self-described javaScript objects build up elastic, maintainable front-backend javaScript applications</p>
         <!--p class="desc">bearcat enables you to write just plain old javaScript objects with a bit magic and self-described to build applications both for frontend and backend<br>It provides dependency injection with asynchronous loading .</p-->
         <p class="buttons">
         <a href="/guide/installation.html" class="button">Get bearcat</a>
@@ -85,52 +85,50 @@ Engine.prototype.run = function() {
 }
 
 bearcat.module(Engine, typeof module !== 'undefined' ? module : {});
-</code></pre>
-        </div>
-    </div>
+</code></pre></div></div>
     <h2>engine will be automatically injected into car</h2>
-    <h2>moreover it is done by asynchronous loading</h2>
+    <h2>car is ready to run just for you to invoke</h2>
 </div>
 <div id="features">
     <div class="feats">
         <div class="feat">
             <h2><span class="icon simple"></span>Simple</h2>
-            <p>Write some HTML, grab some JSON, create a Vue instance, that's it.</p>
+            <p>Write simple plain old javaScript objects, that's it.</p>
         </div>
         <div class="feat">
-            <h2><span class="icon fast"></span>Fast</h2>
-            <p>Precise and efficient async batch DOM updates.</p>
+            <h2><span class="icon fast"></span>Efficient</h2>
+            <p>Dependency injection with asynchronous loading(frontend), no need to use define, require, or a bundle file.</p>
         </div>
         <div class="feat">
-            <h2><span class="icon composable"></span>Composable</h2>
-            <p>Compose your application with decoupled, reusable components.</p>
+            <h2><span class="icon composable"></span>Reuseable</h2>
+            <p>Simple javaScript objects can be used for frontend and backend(node.js) without any modifications.</p>
         </div>
         <div class="feat">
-            <h2><span class="icon compact"></span>Compact</h2>
-            <p>~18kb min+gzip, no dependency.</p>
+            <h2><span class="icon compact"></span>Easy</h2>
+            <p>Easy to use, all javaScript objects will be scaned ready for you, no need to write extra complex, messy configuration files.</p>
         </div>
         <div class="feat">
             <h2><span class="icon powerful"></span>Powerful</h2>
-            <p>Expressions & computed properties with transparent dependency tracking.</p>
+            <p>Powered by dependency injection, AOP based declarative middleware services.</p>
         </div>
         <div class="feat">
-            <h2><span class="icon module"></span>Module Friendly</h2>
-            <p>Install via NPM, Bower or Duo - leverage your favorite eco system!</p>
+            <h2><span class="icon module"></span>Moduler</h2>
+            <p>You just use only those parts that you need.</p>
         </div>
     </div>
 </div>
-<div id="why">
+<!--div id="why">
     <h2>You should try it out if you like:</h2>
     <ul>
-        <li>Extendable Data bindings</li>
-        <li>Plain JS object models</li>
+        <li>simple plain old javaScript objects</li>
+        <li>asynchronous frontend dependency management without amd like define, require</li>
+        <li>write less or none configuration files with the self-described javaScript objects</li>
         <li>API that simply makes sense</li>
         <li>Build UI by composing components</li>
         <li>Mix &amp; matching small libraries</li>
     </ul>
-</div>
+</div-->
 <div id="footer">
-    <a class="start" href="/guide/index.html">Get Started</a>
     <p>Released under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT License</a></p>
     <p>Copyright (c) 2014 <a href="http://bearcatjs.org" target="_blank">bearcat</a></p>
 </div>
