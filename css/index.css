@@ -258,10 +258,10 @@ body {
   -ms-transform: scale(1.05);
   transform: scale(1.05);
 }
-#logo {
+.logo {
   display: block;
   margin: 0 auto;
-  width: 200px;
+  width: 220px;
 }
 #hero {
   text-align: center;
