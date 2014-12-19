@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Installation - bearcat</title>
+        <title>Consistent-configuration - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -67,7 +67,7 @@
         <h2>Guide</h2>
         <ul class="menu-root">
             
-                <li><a href="/guide/installation.html" class="sidebar-link current">Installation</a></li>
+                <li><a href="/guide/installation.html" class="sidebar-link">Installation</a></li>
             
                 <li><a href="/guide/index.html" class="sidebar-link">Getting Started</a></li>
             
@@ -75,7 +75,7 @@
             
                 <li><a href="/guide/aop.html" class="sidebar-link">Aspect Object Programming</a></li>
             
-                <li><a href="/guide/consistent-configuration.html" class="sidebar-link">Consistent-configuration</a></li>
+                <li><a href="/guide/consistent-configuration.html" class="sidebar-link current">Consistent-configuration</a></li>
             
                 <li><a href="/guide/magic-javaScript-objects-in-details.html" class="sidebar-link">Magic javaScripts objects</a></li>
             
@@ -90,38 +90,32 @@
 </div>
 
 <div class="content guide with-sidebar">
-    <h1>Installation</h1>
-    <h2 id="Frontend_-_browser">Frontend - browser</h2>
-<h3 id="Standalone">Standalone</h3>
-<p>Simply download and include with a script tag. <code>bearcat</code> will be registered as a global variable.</p>
-<div id="downloads"><br><a class="button" href="https://raw.github.com/bearcatjs/bearcat/0.3.0/dist/vue.js" download="" target="_blank" rel="external">Development Version</a><span class="light info">177.28kb, plenty of comments and debug/warning messages.</span><br><br><a class="button" href="https://raw.github.com/bearcatjs/bearcat/0.3.0/dist/vue.min.js" download="" target="_blank" rel="external">Production Version</a><span class="light info">55.18kb minified / 18.11kb gzipped</span><br></div>
+    <h1>Consistent-configuration</h1>
+    <h2 id="Overview">Overview</h2>
+<p>In Node.js development, it is common that there are serveral envrionments like development, test, production and so. Corresponding to these envrioments are configurations differed from each other. Therefore, it is necessary to make these configuration consistently.  </p>
+<h2 id="Using_placeHolders">Using placeHolders</h2>
+<p>placeHolder is a signature indicating the place to be replaced by the specific envrioment value<br>in Bearcat, the placeHolder can be like this:  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">${car.num}</span></div></pre></td></tr></table></figure>
 
-<p>Also available on <a href="//cdnjs.cloudflare.com/ajax/libs/vue/0.3.0/vue.min.js">cdnjs</a> (takes some time to sync so the latest version might not be available yet).</p>
-<h3 id="NPM_-_Using_with_browserify">NPM - Using with <a href="https://github.com/substack/node-browserify" target="_blank" rel="external">browserify</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install bearcat</div></pre></td></tr></table></figure>
+<p>then in config.json file you can define <strong><em>car.num</em></strong> with the specific value  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">	"<span class="attribute">car.num</span>": <span class="value"><span class="number">100</span></span></div><div class="line">}</div></pre></td></tr></table></figure>
 
+<h2 id="Environment_configuration">Environment configuration</h2>
+<p>In Bearcat, you can write different environment configurations in the following structure:<br><img src="https://raw.githubusercontent.com/wiki/bearcatnode/bearcat/images/configuration-structure.png" alt="directory structure"></p>
+<p>in directory named <strong><em>config</em></strong>, you put <strong><em>dev</em></strong> and <strong><em>prod</em></strong> sub-directory named by specific envrioment, and then write the specific configurations in these directory corresponding to each environment.  </p>
+<h2 id="Switching_environment">Switching environment</h2>
+<p>In Bearcat, you can switch different environment in the following ways:  </p>
+<ul>
+<li>run with <strong><em>env</em></strong> or <strong><em>—env</em></strong> args  </li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">node app.js env</span>=<span class="string">prod</span></div></pre></td></tr></table></figure>
 
+<ul>
+<li>run with NODE_ENV  </li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">NODE_ENV</span>=<span class="string">prod node app.js</span></div></pre></td></tr></table></figure>
 
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> bearcat = <span class="built_in">require</span>(<span class="string">'bearcat'</span>);</div></pre></td></tr></table></figure>
-
-<h3 id="Bower">Bower</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># only stable version is available through Bower</span></div><div class="line">$ bower install bearcat</div></pre></td></tr></table></figure>
-
-<h3 id="Duo">Duo</h3>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'bearcatjs/bearcat'</span>)</div><div class="line"><span class="comment">// for edge version:</span></div><div class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'bearcatjs/bearcat@dev'</span>)</div></pre></td></tr></table></figure>
-
-<h3 id="Component">Component</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ component install bearcatjs/bearcat</div><div class="line"><span class="comment"># for edge version:</span></div><div class="line">$ component install bearcatjs/bearcat@dev</div></pre></td></tr></table></figure>
-
-<h2 id="Backend_-_nodejs">Backend - nodejs</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm install bearcat</div></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> bearcat = <span class="built_in">require</span>(<span class="string">'bearcat'</span>);</div></pre></td></tr></table></figure>
-
-<h2 id="Ready?">Ready?</h2>
-<p><a href="/guide/">Let’s Get Started</a>.</p>
+<p>by default, the env is <strong><em>dev</em></strong></p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
