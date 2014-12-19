@@ -77,7 +77,7 @@
             
                 <li><a href="/guide/consistent-configuration.html" class="sidebar-link">Consistent-configuration</a></li>
             
-                <li><a href="/guide/magic-javaScript-objects-in-details.html" class="sidebar-link">Magic javaScripts objects details</a></li>
+                <li><a href="/guide/magic-javaScript-objects-in-details.html" class="sidebar-link">Magic javaScript object in detail</a></li>
             
                 <li><a href="/guide/context-json.html" class="sidebar-link">context.json</a></li>
             
@@ -91,7 +91,15 @@
 
 <div class="content guide with-sidebar">
     <h1>bearcat-bootstrap.js</h1>
-    <p>bearcat-bootstrap.js</p>
+    <p>As we all know, for frontend browser, there is no synchronous file io that can be used to load scripts. Therefore, a <strong><em>bearcat-bootstrap.js</em></strong> file is needed to tell bearcat the meta configurations and how to load these javaScript files  </p>
+<p>bearcat-bootstrap.js file can be auto-generated, no need to write by yourself  </p>
+<p>first  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> -g bearcat</span></div></pre></td></tr></table></figure>
+
+<p>then  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bearcat <span class="keyword">generate</span></div></pre></td></tr></table></figure>
+
+<p>ok bearcat-bootstrap.js is ready for you<br>load it as you like by script tag or browerify require or amd define  </p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
