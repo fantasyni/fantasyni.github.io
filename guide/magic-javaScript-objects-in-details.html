@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Magic javaScripts objects - bearcat</title>
+        <title>Magic javaScripts objects details - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -77,7 +77,7 @@
             
                 <li><a href="/guide/consistent-configuration.html" class="sidebar-link">Consistent-configuration</a></li>
             
-                <li><a href="/guide/magic-javaScript-objects-in-details.html" class="sidebar-link current">Magic javaScripts objects</a></li>
+                <li><a href="/guide/magic-javaScript-objects-in-details.html" class="sidebar-link current">Magic javaScripts objects details</a></li>
             
                 <li><a href="/guide/context-json.html" class="sidebar-link">context.json</a></li>
             
@@ -90,28 +90,23 @@
 </div>
 
 <div class="content guide with-sidebar">
-    <h1>Magic javaScripts objects</h1>
+    <h1>Magic javaScripts objects details</h1>
     <h2 id="Overview">Overview</h2>
 <p>Configuration metadata contains a lot of configuration information, including constructor arguments, property values, and container-specific information such as initialization method, static factory method name, and so on.  </p>
 <h2 id="Configuration_Style">Configuration Style</h2>
-<p>In Bearcat, configuration metadata can be written in JSON-style configuration file like context.json for example, or it can be written in the code file with POJOs. The only difference between these two styles is that code-based meta’s <strong><em>func</em></strong> attribute must be <strong><em>Function</em></strong> specified by the constructor function of the bean, and the configuration-file-based meta’s <strong><em>func</em></strong> attribute is a <strong><em>String</em></strong> to specify the relative location of node.js file path that contains the constructor function.  </p>
+<p>In Bearcat, configuration metadatas are recommended to write Magic, self-described javaScript objects. Howerver, for some history reason, it can be written in JSON-style configuration file like context.json for example, or it can be written in the code file with POJOs. The only difference between these two styles is that code-based meta’s <strong><em>func</em></strong> attribute must be <strong><em>Function</em></strong> specified by the constructor function of the bean, and the configuration-file-based meta’s <strong><em>func</em></strong> attribute is a <strong><em>String</em></strong> to specify the relative location of node.js file path that contains the constructor function.  </p>
+<p>magic javaScript objects<br>car.js </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"car"</span>; <span class="comment">// id car</span></div><div class="line">}</div><div class="line">  </div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'run car...'</span>);</div><div class="line">    <span class="keyword">return</span> <span class="string">'car'</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
+
 <p>code-based meta<br>car.js</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{}</div><div class="line"></div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'run car...'</span>);</div><div class="line">	<span class="keyword">return</span> <span class="string">'car'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// func is the constructor function</span></div><div class="line"><span class="built_in">module</span>.exports = {</div><div class="line">	id: <span class="string">"car"</span>,</div><div class="line">	func: Car</div><div class="line">};</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{}</div><div class="line"></div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'run car...'</span>);</div><div class="line">    <span class="keyword">return</span> <span class="string">'car'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="comment">// func is the constructor function</span></div><div class="line"><span class="built_in">module</span>.exports = {</div><div class="line">    id: <span class="string">"car"</span>,</div><div class="line">    func: Car</div><div class="line">};</div></pre></td></tr></table></figure>
 
 <p>configuration-file-based meta<br>car.js  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{}</div><div class="line"></div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'run car...'</span>);</div><div class="line">	<span class="keyword">return</span> <span class="string">'car'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{}</div><div class="line"></div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'run car...'</span>);</div><div class="line">    <span class="keyword">return</span> <span class="string">'car'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
 
 <p>context.json</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">	"<span class="attribute">name</span>": <span class="value"><span class="string">"simple"</span></span>,</div><div class="line">	"<span class="attribute">beans</span>": <span class="value">[{</span></div><div class="line">		"<span class="attribute">id</span>": <span class="value"><span class="string">"car"</span></span>,</div><div class="line">		"<span class="attribute">func</span>": <span class="value"><span class="string">"car"</span></span></div><div class="line">	}]</div><div class="line">}</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    <span class="string">"name"</span>: <span class="string">"simple"</span>,</div><div class="line">    <span class="string">"beans"</span>: [{</div><div class="line">   	    <span class="string">"id"</span>: <span class="string">"car"</span>,</div><div class="line">	    <span class="string">"func"</span>: <span class="string">"car"</span></div><div class="line">    }]</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>Since bearcat 0.2.10, bearcat supports function annotation based on $ named parameters, developers can write <strong><em>$id</em></strong>, <strong><em>$scope</em></strong>, <strong><em>$engine</em></strong> to express the configuration and dependencies to bearcat  </p>
-<p>app/car.js (car.js under the app directory)</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.$id = <span class="string">"car"</span>; <span class="comment">// id car</span></div><div class="line">}</div><div class="line"></div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'run car...'</span>);</div><div class="line">	<span class="keyword">return</span> <span class="string">'car'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
-
-<p>context.json</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">	"<span class="attribute">name</span>": <span class="value"><span class="string">"simple"</span></span>,</div><div class="line">	"<span class="attribute">scan</span>": <span class="value"><span class="string">"app"</span></span></div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>more information can be referred to <a href="Function-annotation-di">Function annotation expressed di</a></p>
 <h2 id="Configuration_attribute">Configuration attribute</h2>
 <h3 id="Bean_attribute">Bean attribute</h3>
 <p>Bean attribute will be wrapped into a <a href="https://github.com/bearcatnode/bearcat/blob/master/lib/beans/support/beanDefinition.js" target="_blank" rel="external">BeanDefinition</a> object.  </p>
@@ -144,13 +139,6 @@
 <li>runtime : set to true to specify that target method arguments will be passed to this advice  </li>
 </ul>
 </li>
-</ul>
-<h3 id="node-js_Env_attribute">node.js Env attribute</h3>
-<p>node.js env attribute can be used to shutoff some bearcat functions   </p>
-<ul>
-<li>process.env.BEARCAT_LOGGER = ‘off’; shutoff pomelo-logger use config/log4js.json configuration</li>
-<li>process.env.BEARCAT_HOT = ‘off’; shutoff bearcat hot reload code function, will not watch hot reload path</li>
-<li>process.env.BEARCAT_ANNOTATION = ‘off’; shutoff bearcat use $ function annotation</li>
 </ul>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
