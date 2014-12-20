@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>The Vue Constructor - bearcat</title>
+        <title>bearcat api - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -67,36 +67,123 @@
         <h2>Api</h2>
         <ul class="menu-root">
             
-                <li><a href="/api/index.html" class="sidebar-link current">The Vue Constructor</a></li>
-            
-                <li><a href="/api/options.html" class="sidebar-link">Options</a></li>
-            
-                <li><a href="/api/instance-properties.html" class="sidebar-link">Instance Properties</a></li>
-            
-                <li><a href="/api/instance-methods.html" class="sidebar-link">Instance Methods</a></li>
-            
-                <li><a href="/api/global-api.html" class="sidebar-link">Global API</a></li>
-            
-                <li><a href="/api/directives.html" class="sidebar-link">Directives</a></li>
-            
-                <li><a href="/api/filters.html" class="sidebar-link">Filters</a></li>
+                <li><a href="/api/index.html" class="sidebar-link current">bearcat api</a></li>
             
         </ul>
     </div>
 </div>
 
 <div class="content api with-sidebar">
-    <h1>The Vue Constructor</h1>
-    <p>The <code>Vue</code> constructor is the core of Vue.js. It is a constructor function that allows you to create Vue instances. Creating a Vue instance is straightforward:</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> vm = <span class="keyword">new</span> Vue({ <span class="comment">/* options */</span> })</div></pre></td></tr></table></figure>
+    <h1>bearcat api</h1>
+    <h2 id="createApp">createApp</h2>
+<p>The <code>createApp</code> is the core of bearcat. It is a factory constructor function that allows you to create bearcat instance.</p>
+<ul>
+<li>@param  {Array}  configLocations context path array</li>
+<li>@param  {Object} opts</li>
+<li>@param  {String} opts.NODE_ENV            setup env</li>
+<li>@param  {String} opts.BEARCAT_ENV         setup env</li>
+<li>@param  {String} opts.NODE_CPATH          setup config path</li>
+<li>@param  {String} opts.BEARCAT_CPATH       setup config path</li>
+<li>@param  {String} opts.BEARCAT_LOGGER      setup ‘off’ to turn off bearcat logger configuration</li>
+<li>@param  {String} opts.BEARCAT_HOT         setup ‘off’ to turn off bearcat hot code reloading</li>
+<li>@param  {String} opts.BEARCAT_ANNOTATION  setup ‘off’ to turn off bearcat $ based annotation</li>
+<li>@param  {String} opts.BEARCAT_GLOBAL       setup bearcat to be global object</li>
+<li>@return {Object} bearcat object</li>
+<li><p>@api public</p>
+<h2 id="start">start</h2>
+</li>
+</ul>
+<p>start bearcat app  </p>
+<ul>
+<li>@param  {Function} cb start callback function</li>
+<li><p>@api public</p>
+<h2 id="stop">stop</h2>
+</li>
+</ul>
+<p>stop bearcat app, it will stop internal applicationContext, destroy all singletonBeans</p>
+<ul>
+<li>@api public</li>
+</ul>
+<h2 id="use">use</h2>
+<p>add async loading beans, this just add beans needed to be loaded to bearcat.</p>
+<p>examples:  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">bearcat.<span class="built_in">load</span>([<span class="string">'car'</span>]);</div><div class="line">bearcat.<span class="built_in">load</span>(<span class="string">'car'</span>);</div></pre></td></tr></table></figure>
 
-<p>When you instantiate a Vue instance, you need to pass in an option object which can include information about the DOM element, data object, mixin methods, lifecycle callbacks and more. See the full list of <a href="/api/options.html">Instantiation Options</a>.</p>
-<p>Each Vue instance is essentially a ViewModel (hence the variable name <code>vm</code> you will see throughout the docs). It has an associated DOM element <code>$el</code>, which is roughly the V in MVVM. It also has an associated JavaScript object <code>$data</code>, which corresponds to the M in MVVM. Changing the M results in updates in the V. For two-way bindings, user inputs triggered in the V results in changes in the M. For more details check out <a href="/api/instance-properties.html">Instance Properties</a>.</p>
-<p>If you provided the <code>el</code> option at instantiation, the Vue instance will immediately enter the compilation phase. Otherwise, it will wait until <code>vm.$mount()</code> is called before it starts compilation. During the compilation phase, Vue walks through the DOM and collects the directives it runs into, and “links” the data and the DOM with these directives. Once linked, these DOM nodes are now said to be managed by the Vue instance. A DOM node can only be managed by one Vue instance, and should not be compiled more than once.</p>
-<p>Vue instances proxy access to their <code>$data</code> objects, so if you have <code>vm.$data.msg</code> you can also access it as <code>vm.msg</code>. This might look a bit magical, but is totally optional. You can stick to <code>vm.$data.msg</code> for more explicit data access. However it is still important to notice the difference between <code>vm</code> and <code>vm.$data</code>, since the former cannot be observed by other Vue instances as data.</p>
-<p>It’s also worth noting that data objects do not necessarily belong to a single Vue instance - multiple ViewModels can observe the same piece of data, whether directly as <code>$data</code> or nested under it. This is useful when multiple components need to react to a shared global state object.</p>
-<p>Each Vue instance also has a number of <a href="/api/instance-methods.html">Instance Methods</a> which cover data observation, event communication and DOM manipulation.</p>
-<p>Finally, the <code>Vue</code> constructor itself also exposes the <a href="/api/global-api.html">Global API</a>, which allow you to extend the <code>Vue</code> class, configure global settings and register global custom assets such as components, directives, filters and more.</p>
+<ul>
+<li>@param  {Array|String} async loading beans id</li>
+<li>@api public</li>
+</ul>
+<h2 id="async">async</h2>
+<p>async loading beans</p>
+<p>examples:  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">bearcat.async([<span class="string">'car'</span>], <span class="function"><span class="keyword">function</span><span class="params">(car)</span> </span>{</div><div class="line">  <span class="comment">// car is ready</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {Array|String} async loading beans id</li>
+<li>@return {Function}     callback with loaded bean instances</li>
+<li>@api public</li>
+</ul>
+<h2 id="module">module</h2>
+<p>register module(bean) to IoC container through $ based self-described function.</p>
+<p>examples:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bearcat.module(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">    <span class="keyword">this</span>.$scope = <span class="string">"prototype"</span>;</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {Function} func $ annotation function</li>
+<li>@api public</li>
+</ul>
+<h2 id="getBean">getBean</h2>
+<p>get bean from IoC container through beanName or meta argument.</p>
+<p>examples:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// through beanName</span></div><div class="line"><span class="keyword">var</span> car = bearcat.getBean(<span class="string">"car"</span>);</div><div class="line"></div><div class="line"><span class="comment">// through meta</span></div><div class="line"><span class="keyword">var</span> car = bearcat.getBean({</div><div class="line">   id: <span class="string">"car"</span>,</div><div class="line">   func: Car <span class="comment">// Car is a function constructor</span></div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// through $ annotation func</span></div><div class="line"><span class="keyword">var</span> car = bearcat.getBean(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">   <span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">   <span class="keyword">this</span>.$scope = <span class="string">"prototype"</span>;</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {String} beanName</li>
+<li>@return {Object} bean</li>
+<li><p>@api public</p>
+<h2 id="getRoute">getRoute</h2>
+<p>convenient function for using in MVC route mapping.</p>
+<p>examples:  </p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// express</span></div><div class="line"><span class="keyword">var</span> app = express();</div><div class="line">app.get(<span class="string">'/'</span>, bearcat.getRoute(<span class="string">'bearController'</span>, <span class="string">'index'</span>));</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {String} beanName</li>
+<li>@param  {String} fnName routeName</li>
+<li><p>@api public</p>
+<h2 id="getFunction">getFunction</h2>
+<p>get bean constructor function from IoC container through beanName.</p>
+<p>examples:  </p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// through beanName</span></div><div class="line"><span class="keyword">var</span> Car = bearcat.getFunction(<span class="string">"car"</span>);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {String}   beanName</li>
+<li>@return {Function} bean constructor function</li>
+<li><p>@api public</p>
+<h2 id="getBeanByFunc">getBeanByFunc</h2>
+<p>get bean from IoC container through $ annotation function.</p>
+<p>examples:  </p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bearcat.getBeanByFunc(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">   <span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">   <span class="keyword">this</span>.$scope = <span class="string">"prototype"</span>;</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {Function} func $ annotation function</li>
+<li><p>@api public</p>
+<h2 id="getBeanByMeta">getBeanByMeta</h2>
+<p>get bean from IoC container through meta argument.</p>
+<p>examples:  </p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bearcat.getBeanByMeta({</div><div class="line">	 id: <span class="string">"car"</span>,</div><div class="line">	 func: Car <span class="comment">// Car is a function constructor</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {Object} meta meta object</li>
+<li>@api public</li>
+</ul>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
