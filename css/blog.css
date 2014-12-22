@@ -1,0 +1,32 @@
+.content.blog h1 {
+  margin: 0 0 0.5em;
+  text-align: center;
+}
+.content.blog h2 {
+  margin: 0.8em 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+.content.blog h2 a {
+  color: $dark;
+}
+.content.blog h2 a:hover {
+  border-bottom: 2px solid $green;
+}
+.content.blog h4 {
+  color: $light;
+  margin: 1.2em 0;
+}
+.content.blog figure,
+.content.blog p {
+  margin-left: 0;
+}
+.content.blog .post {
+  padding: 1em 0 2em;
+  border-bottom: 1px solid $border;
+}
+@media screen and (max-width: 1400px) and (min-width: 720px) {
+  .content.blog {
+    margin: 0 0 0 280px;
+  }
+}

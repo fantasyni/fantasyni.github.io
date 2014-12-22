@@ -269,6 +269,7 @@ ul.demo li {
 }
 .content.blog h1 {
   margin: 0 0 0.5em;
+  text-align: center;
 }
 .content.blog h2 {
   margin: 0.8em 0;
@@ -480,9 +481,6 @@ ul.demo li {
 .content a {
   color: #09f;
   font-weight: 600;
-}
-.content blockquote {
-  margin: 0;
 }
 .content blockquote p {
   margin-left: 0;
