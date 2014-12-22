@@ -67,23 +67,7 @@
         <ul>
         
             <li>
-                <a href="/2014/12/22/asynchronous frontend dependency management without AMD/" class="sidebar-link current">asynchronous frontend dependency management without AMD</a>
-            </li>
-        
-            <li>
-                <a href="/2014/12/08/011-component/" class="sidebar-link">0.11 Component Tips</a>
-            </li>
-        
-            <li>
-                <a href="/2014/11/09/vue-011-release/" class="sidebar-link">Vue.js 0.11 released!</a>
-            </li>
-        
-            <li>
-                <a href="/2014/07/29/vue-next/" class="sidebar-link">Vue.js 0.10.6, and what's next</a>
-            </li>
-        
-            <li>
-                <a href="/2014/03/22/vuejs-010-release/" class="sidebar-link">Vue.js 0.10 is here!</a>
+                <a href="/2014/12/22/asynchronous-frontend-dependency-management-without-AMD/" class="sidebar-link current">asynchronous frontend dependency management without AMD</a>
             </li>
         
         <li style="margin:10px 0 3px">
@@ -100,6 +84,8 @@
     <h2 id="Overview">Overview</h2>
 <p>Frontend dependency management is always the discussion point, people have a lot of to say about it. The key reason for this is that javaScript language itself does not provide <code>module</code> like support, it really sucks developers.  </p>
 <p>For years ago, developers used to use <code>&lt;script&gt;</code> tag to write code, however when the page codes grows, the maintainability will be harder and harder. Then, with the arise of <a href="http://nodejs.org/" target="_blank" rel="external">nodejs</a>, <a href="http://wiki.commonjs.org/wiki/CommonJS" target="_blank" rel="external">CommonJS</a> brings up using <code>require</code>, <code>exports</code> to resolve modules. It seems really nice when using in nodejs, however, when it meets browser, it works not quite well. The reason is simply that browser does not support synchronous <code>require</code>, it can not load a script from file I/O. Then <a href="https://github.com/amdjs/amdjs-api/wiki/AMD" target="_blank" rel="external">AMD</a> comes up a specification used for browser, as the AMD says:  </p>
+<a id="more"></a>
+
 <blockquote>
 
 <p>The Asynchronous Module Definition (AMD) API specifies a mechanism for defining modules such that the module and its dependencies can be asynchronously loaded. This is particularly well suited for the browser environment where synchronous loading of modules incurs performance, usability, debugging, and cross-domain access problems.</p>
@@ -191,7 +177,7 @@
 
 <h2 id="Conclusion">Conclusion</h2>
 <p>bearcat is still a young but promising project, it heavilly needs your contributions.<br>bearcat is focused on writing small javaScripts, but building big world. The world is connected through bearcat’s powerful dependency injection and Aspect Oriented Programming(AOP). Codes are shareable, configurations are javaScript objects enhanced by themselves, dependencies are auto-resolved, scripts are asynchronously loaded if needed.   </p>
-<p>The official site     <a href="http://bearcatjs.org/" target="_blank" rel="external">http://bearcatjs.org/</a><br>THe github repository <a href="https://github.com/bearcatjs/bearcat" target="_blank" rel="external">https://github.com/bearcatjs/bearcat</a><br>The official twitter  <a href="https://twitter.com/_bearcatjs" target="_blank" rel="external">bearcatjs</a></p>
+<p>The official site     <a href="http://bearcatjs.org/" target="_blank" rel="external">http://bearcatjs.org/</a><br>The official twitter  <a href="https://twitter.com/_bearcatjs" target="_blank" rel="external">bearcatjs</a><br>The github repository <a href="https://github.com/bearcatjs/bearcat" target="_blank" rel="external">https://github.com/bearcatjs/bearcat</a></p>
 <p>May you enjoy coding with bearcat …</p>
 <h2 id="Reference">Reference</h2>
 <ul>

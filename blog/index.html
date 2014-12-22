@@ -67,43 +67,13 @@
 <h1 style="text-align: center; margin-bottom:.5em">The bearcat Blog</h1>
 
     <div class="post">
-        <h2><a href="/2014/12/22/asynchronous frontend dependency management without AMD/">asynchronous frontend dependency management without AMD</a></h2>
+        <h2><a href="/2014/12/22/asynchronous-frontend-dependency-management-without-AMD/">asynchronous frontend dependency management without AMD</a></h2>
         <h4>Dec 22, 2014</h4>
-        <div></div>
-        <a href="/2014/12/22/asynchronous frontend dependency management without AMD/">... continue reading</a>
-    </div>
-
-    <div class="post">
-        <h2><a href="/2014/12/08/011-component/">0.11 Component Tips</a></h2>
-        <h4>Dec 8, 2014</h4>
-        <div><p>The release of 0.11 introduced <a href="https://github.com/yyx990803/vue/blob/master/changes.md" target="_blank" rel="external">many changes</a>, but the most important one is how the new component scope works. Previously in 0.10.x, components have inherited scope by default. That means in a child component template you can reference parent scope properties. This often leads to tightly-coupled components, where a child component assumes knowledge of what properties are present in the parent scope. It is also possible to accidentally refer to a parent scope property in a child component.</p>
+        <div><h2 id="Overview">Overview</h2>
+<p>Frontend dependency management is always the discussion point, people have a lot of to say about it. The key reason for this is that javaScript language itself does not provide <code>module</code> like support, it really sucks developers.  </p>
+<p>For years ago, developers used to use <code>&lt;script&gt;</code> tag to write code, however when the page codes grows, the maintainability will be harder and harder. Then, with the arise of <a href="http://nodejs.org/" target="_blank" rel="external">nodejs</a>, <a href="http://wiki.commonjs.org/wiki/CommonJS" target="_blank" rel="external">CommonJS</a> brings up using <code>require</code>, <code>exports</code> to resolve modules. It seems really nice when using in nodejs, however, when it meets browser, it works not quite well. The reason is simply that browser does not support synchronous <code>require</code>, it can not load a script from file I/O. Then <a href="https://github.com/amdjs/amdjs-api/wiki/AMD" target="_blank" rel="external">AMD</a> comes up a specification used for browser, as the AMD says:  </p>
 </div>
-        <a href="/2014/12/08/011-component/">... continue reading</a>
-    </div>
-
-    <div class="post">
-        <h2><a href="/2014/11/09/vue-011-release/">Vue.js 0.11 released!</a></h2>
-        <h4>Nov 9, 2014</h4>
-        <div><p>After the long wait, <a href="https://github.com/yyx990803/vue/releases/tag/0.11.0" target="_blank" rel="external">Vue.js 0.11 <strong>Cowboy Bebop</strong></a> is finally here! Thanks to everyone who tried out the release candidate versions and provided feedback / bug reports along the way.</p>
-</div>
-        <a href="/2014/11/09/vue-011-release/">... continue reading</a>
-    </div>
-
-    <div class="post">
-        <h2><a href="/2014/07/29/vue-next/">Vue.js 0.10.6, and what's next</a></h2>
-        <h4>Jul 29, 2014</h4>
-        <div><h2 id="0-10-6">0.10.6</h2>
-<p>Vue.js 0.10.6 has been released! This is another small bug-fix release and will be the last maintainance version before the next major release.</p>
-</div>
-        <a href="/2014/07/29/vue-next/">... continue reading</a>
-    </div>
-
-    <div class="post">
-        <h2><a href="/2014/03/22/vuejs-010-release/">Vue.js 0.10 is here!</a></h2>
-        <h4>Mar 22, 2014</h4>
-        <div><p>Vue.js 0.10.0 (Blade Runner) has been released! This release comes with many useful additions based on the suggestions from the users, notably interpolation in literal directives, dynamic components with the new <code>v-view</code> directive, array filters, and the option to configure interpolation delimiters. Internally, the codebase has received many refactoring and improvements which makes Vue.js <a href="http://vuejs.org/perf/" target="_blank" rel="external">even faster</a>.</p>
-</div>
-        <a href="/2014/03/22/vuejs-010-release/">... continue reading</a>
+        <a href="/2014/12/22/asynchronous-frontend-dependency-management-without-AMD/">... continue reading</a>
     </div>
 
 </div>
