@@ -71,7 +71,7 @@
             
                 <li><a href="/examples/markdown-editor.html" class="sidebar-link current">markdown-editor</a></li>
             
-                <li><a href="/examples/flappy_bird.html" class="sidebar-link">flappy-bird</a></li>
+                <li><a href="/examples/flappy_bird.html" class="sidebar-link">clumsy-bird</a></li>
             
                 <li><a href="/examples/2048.html" class="sidebar-link">2048</a></li>
             
@@ -83,14 +83,24 @@
 
 <div class="content examples with-sidebar">
     <h1>markdown-editor Example</h1>
-    <blockquote>
-<p>browserify-markdown-editor.</p>
-</blockquote>
-<iframe width="100%" height="500" src="bearcat-examples/browserify-markdown-editor/index.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    <iframe width="100%" height="500" src="bearcat-examples/browserify-markdown-editor/index.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<blockquote>
-<p>[<a href="https://github.com/bearcatjs/bearcat-example/tree/master/browserify-markdown-editor" target="_blank" rel="external">Source</a>]</p>
-</blockquote>
+<p>Browserify lets you require(‘modules’) in the browser by bundling up all of your dependencies. Therefore, it is easy to resolve a library using browserify by simply call <code>require(&#39;library&#39;)</code>. However, browserify bundles up all files, debug and edit files may meet up some problems. You should watch files and build up bundle file whenever code files changes, moreover when build errored, the error message should show up in the browser to make developer know what happened. For better debugger, developers should know how to use <a href="http://thlorenz.com/blog/browserify-sourcemaps" target="_blank" rel="external">source-map</a>.<br>With bearcat, browserify will simply be a role of <code>library resolver</code>, developers write magic javaScript objects, and if want to use a library, use browserify to resolve it.  </p>
+<p>This example shows how to use browserify with bearcat.  </p>
+<p>First, you should write a javaScript object named <code>requireUtil</code> for example as a bridge between bearcat and browserify.<br>This file will be bundled into browserify, and it can see <code>require</code> to resolve library. Then when some other files need to use a library from browserify, just inject <code>requireUtil</code> into it, that’s it.  </p>
+<p>requireUtil.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> RequireUtil = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"requireUtil"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.brace = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">RequireUtil.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.brace = <span class="built_in">require</span>(<span class="string">'brace'</span>);</div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(RequireUtil, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p>in your controller javaScript file, inject <code>requireUtil</code> with magic attribute <code>$requireUtil</code>  </p>
+<p>markDownController.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> MarkDownController = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"markDownController"</span>;</div><div class="line">    <span class="keyword">this</span>.$requireUtil = <span class="literal">null</span>; <span class="comment">// requireUtil is ready for you to use</span></div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(MarkDownController, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p>then add your code logic  </p>
+<p>markDownController.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> MarkDownController = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"markDownController"</span>;</div><div class="line">    <span class="keyword">this</span>.$requireUtil = <span class="literal">null</span>; <span class="comment">// requireUtil is ready for you to use</span></div><div class="line">}</div><div class="line">  </div><div class="line">MarkDownController.prototype.initBrace = <span class="function"><span class="keyword">function</span><span class="params">(md)</span> </span>{</div><div class="line">    <span class="keyword">var</span> ace = <span class="keyword">this</span>.$requireUtil.brace;</div><div class="line">    <span class="keyword">var</span> editor = ace.edit(<span class="string">'editor'</span>);</div><div class="line">    editor.getSession().setMode(<span class="string">'ace/mode/markdown'</span>);</div><div class="line">    editor.setTheme(<span class="string">'ace/theme/monokai'</span>);</div><div class="line">    editor.setValue(md);</div><div class="line">    editor.clearSelection();</div><div class="line">    <span class="keyword">return</span> editor;</div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(MarkDownController, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p>because <code>markDownController</code> file is asynchronously loaded, you can edit and debug as you like, just enjoy coding…   </p>
+<p>the whole sources can be found on <a href="https://github.com/bearcatjs/bearcat-example/tree/master/browserify-markdown-editor" target="_blank" rel="external">browserify-markdown-editor</a><br>this exmaple is originlly cloned from <a href="https://github.com/thlorenz/browserify-markdown-editor" target="_blank" rel="external">thlorenz browserify-markdown-editor</a>, you can make a comparison  </p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>

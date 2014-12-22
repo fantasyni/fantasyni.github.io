@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>flappy-bird - bearcat</title>
+        <title>clumsy-bird - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -71,7 +71,7 @@
             
                 <li><a href="/examples/markdown-editor.html" class="sidebar-link">markdown-editor</a></li>
             
-                <li><a href="/examples/flappy_bird.html" class="sidebar-link current">flappy-bird</a></li>
+                <li><a href="/examples/flappy_bird.html" class="sidebar-link current">clumsy-bird</a></li>
             
                 <li><a href="/examples/2048.html" class="sidebar-link">2048</a></li>
             
@@ -82,15 +82,24 @@
 </div>
 
 <div class="content examples with-sidebar">
-    <h1>flappy-bird Example</h1>
-    <blockquote>
-<p>flappy-bird.</p>
-</blockquote>
-<iframe width="100%" height="500" src="bearcat-examples/flappy-bird/index.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    <h1>clumsy-bird Example</h1>
+    <iframe width="100%" height="500" src="bearcat-examples/clumsy-bird/index.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<blockquote>
-<p>[<a href="https://github.com/bearcatjs/bearcat-example/tree/master/flappy-bird" target="_blank" rel="external">Source</a>]</p>
-</blockquote>
+<p>You must be familiar with flappy-bird, and that’s the same as clumsy-bird, try to fly the bird and make bird alive as long as you can.<br>Games are more complex than normal web applications, and need more about modular codes to make it simple and maintainable.<br>This demo uses <a href="https://github.com/melonjs/melonJS" target="_blank" rel="external">melonjs</a> as the javaScript game engine, the official codes are writtern in sperate files that need to build up a bundle to work up for the browser. <code>melonjs</code> provides a lot of useful base class for developers to use, therefore in <code>melonjs</code> the codes will mostly like this  </p>
+<p>pipeEntity.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> PipeEntity = me.ObjectEntity.extend({</div><div class="line">    init: <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">       <span class="comment">// ...</span></div><div class="line">	},</div><div class="line">  </div><div class="line">    update: <span class="function"><span class="keyword">function</span><span class="params">(dt)</span> </span>{</div><div class="line">	   <span class="comment">// ...</span></div><div class="line">    }</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>extend a base class which <code>melonjs</code> provides, overrides the part you needed. Although codes are written in sperate files, <code>actually</code> they are in the <code>same</code> file. All variables are global, you need to take care of all of these. Besides, edit and debug is not quite attractive because you have to bundle files up whenever source codes changed…  </p>
+<p>What about coding with bearcat ? Then you can write modular codes in <code>actual</code> sperate files and do not need to bundle up a file, bearcat will asynchronously load scirpt files for you …  </p>
+<p>To use bearcat, you can wrap the above code with a factory bean, whenever someone else need this <code>PipeEntity</code>, just get the instance through the factory contrustor. Factory beans are connected with bearcat’s powerfull dependency injection.  </p>
+<p>PipeEntityFactory.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> PipeEntityFactory = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"pipeEntity"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">PipeEntityFactory.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.ctor = me.ObjectEntity.extend({</div><div class="line">	    init: <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">		<span class="comment">// ...</span></div><div class="line">	    },</div><div class="line">  </div><div class="line">	    update: <span class="function"><span class="keyword">function</span><span class="params">(dt)</span> </span>{</div><div class="line">		<span class="comment">// ...</span></div><div class="line">	    },</div><div class="line">    });</div><div class="line">}</div><div class="line">  </div><div class="line">PipeEntityFactory.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">(x, y)</span> </span>{</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">this</span>.ctor(x, y);</div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(PipeEntityFactory, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p>then you want to create a pipe instance ? just inject the pipe factory into it  </p>
+<p>game.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Game = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"game"</span>;</div><div class="line">    <span class="keyword">this</span>.$pipeEntity = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">Game.prototype.loaded = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> pipeEntity = <span class="keyword">this</span>.$pipeEntity;</div><div class="line">    me.pool.register(<span class="string">"pipe"</span>, pipeEntity.ctor, <span class="literal">true</span>); <span class="comment">// register pipeEntity construstor</span></div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(Game, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p>the whole sources can be found on <a href="https://github.com/bearcatjs/bearcat-example/tree/master/clumsy-bird" target="_blank" rel="external">clumsy-bird</a><br>this exmaple is originlly cloned from <a href="https://github.com/ellisonleao/clumsy-bird" target="_blank" rel="external">ellisonleao clumsy-bird</a>, you can make a comparison  </p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>

@@ -71,7 +71,7 @@
             
                 <li><a href="/examples/markdown-editor.html" class="sidebar-link">markdown-editor</a></li>
             
-                <li><a href="/examples/flappy_bird.html" class="sidebar-link">flappy-bird</a></li>
+                <li><a href="/examples/flappy_bird.html" class="sidebar-link">clumsy-bird</a></li>
             
                 <li><a href="/examples/2048.html" class="sidebar-link">2048</a></li>
             
@@ -83,14 +83,21 @@
 
 <div class="content examples with-sidebar">
     <h1>multipage Example</h1>
-    <blockquote>
-<p>multipage example.</p>
-</blockquote>
-<iframe width="100%" height="500" src="bearcat-examples/example-multipage/car_BMW.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    <iframe width="100%" height="300" src="bearcat-examples/example-multipage/car_BMW.html" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-<blockquote>
-<p>[<a href="https://github.com/bearcatjs/bearcat-example/tree/master/example-multipage" target="_blank" rel="external">Source</a>]</p>
-</blockquote>
+<p>this example shows two pages, each page asynchronously loads different script files  </p>
+<p>when in BMW page, it uses <code>bmwCarController</code>, which requires <code>bmwCar</code>  </p>
+<p>bmwCarController.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> BmwCarController = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"bmwCarController"</span>;</div><div class="line">    <span class="keyword">this</span>.$bmwCar = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">BmwCarController.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$bmwCar.run();</div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(BmwCarController, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p><code>bmwCar</code> requires <code>bmwEngine</code> and <code>bmwWheel</code>  </p>
+<p>bmwCar.js</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> BmwCar = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"bmwCar"</span>;</div><div class="line">    <span class="keyword">this</span>.$bmwEngine = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">this</span>.$bmwWheel = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">this</span>.$printUtil = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">BmwCar.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$bmwEngine.start();</div><div class="line">    <span class="keyword">this</span>.$bmwWheel.run();</div><div class="line">    <span class="keyword">var</span> msg = <span class="string">'bmwCar run...'</span>;</div><div class="line">    <span class="built_in">console</span>.log(msg);</div><div class="line">    <span class="keyword">this</span>.$printUtil.printResult(msg);</div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(BmwCar, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p>wire them up with bearcat  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"./lib/bearcat.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"./bearcat-bootstrap.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript"></span></div><div class="line">bearcat.createApp();</div><div class="line">bearcat.use([<span class="string">'bmwCarController'</span>]);</div><div class="line">bearcat.start(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> bmwCarController = bearcat.getBean(<span class="string">'bmwCarController'</span>);</div><div class="line">    bmwCarController.run();</div><div class="line">});</div><div class="line"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<p>the whole source sources can be found on <a href="https://github.com/bearcatjs/bearcat-example/tree/master/example-multipage" target="_blank" rel="external">example-multipage</a></p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>
