@@ -106,7 +106,7 @@
 </ul>
 <p>AMD especially <a href="http://requirejs.org/docs/api.html" target="_blank" rel="external">requirejs</a> has its answers for every question. AMD’s answer for <code>nearly every one of them</code> is to <code>add some configuration directivers</code> or <code>write a r.js plug-in</code>.<br>Then we write configrutions file with many lines long of obscure directives, and these files are hard to be reused for example, using for the tests  </p>
 <p>So, what about asynchronous loading scripts without using AMD like <code>define</code> or writing messy configuration file ?<br>This is what <a href="http://bearcatjs.org" target="_blank" rel="external">bearcat</a> tries to make an effort, which enables developers to write <code>magic, self-described javaScript objects</code> and simply register them to bearcat, bearcat will resolve dependencies, asynchronous loading srcipts when needed, ready for you to use. There are no <code>define</code>, no <code>require</code>, no <code>bundle file</code>, everything is simple, easy, and back to javaScript nature.  </p>
-<h2 id="Show_me_some_bearcat">Show me some bearcat</h2>
+<h2 id="Show_me_some_codes">Show me some codes</h2>
 <p>Let’s begin with a dead simple example:<br>A simple car must have an engine to startup, so you write two files. </p>
 <p>car.js</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">}</div><div class="line">  </div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{ </div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'run car...'</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
@@ -184,6 +184,7 @@
 <li><a href="http://codeofrob.com/entries/why-i-stopped-using-amd.html" target="_blank" rel="external">why-i-stopped-using-amd</a></li>
 <li><a href="http://esa-matti.suuronen.org/blog/2013/03/22/journey-from-requirejs-to-browserify/" target="_blank" rel="external">journey-from-requirejs-to-browserify</a></li>
 <li><a href="http://blogs.lessthandot.com/index.php/webdev/uidevelopment/angularjs-vs-knockout-modules-and-di-6/" target="_blank" rel="external">angularjs-vs-knockout-modules-and-di-6</a></li>
+<li><a href="https://docs.angularjs.org/guide/di" target="_blank" rel="external">angularjs dependency injection</a></li>
 </ul>
 
 </div>
