@@ -83,7 +83,7 @@
     <h4>Dec 22, 2014</h4>
     <h2 id="Overview">Overview</h2>
 <p>Frontend dependency management is always the discussion point, people have a lot of to say. The key reason for this is that javaScript language itself does not provide <code>module</code> like support, it really sucks developers.  </p>
-<p>For years ago, developers used to use <code>&lt;script&gt;</code> tag to write code, however when the page codes grows, the maintainability will be harder and harder. Then, with the arise of <a href="http://nodejs.org/" target="_blank" rel="external">nodejs</a>, <a href="http://wiki.commonjs.org/wiki/CommonJS" target="_blank" rel="external">CommonJS</a> brings up using <code>require</code>, <code>exports</code> to resolve modules. It seems really nice when using in nodejs, however, when it meets browser, it works not quite well. The reason is simply that browser does not support synchronous <code>require</code>, it can not load a script from file I/O. Then <a href="https://github.com/amdjs/amdjs-api/wiki/AMD" target="_blank" rel="external">AMD</a> comes up a specification used for browser, as the AMD says:  </p>
+<p>For years ago, developers used to use <code>&lt;script&gt;</code> tag to write code, however when the page codes grows, the maintainability will be harder and harder. Then, with the arise of <a href="http://nodejs.org/" target="_blank" rel="external">nodejs</a>, <a href="http://wiki.commonjs.org/wiki/CommonJS" target="_blank" rel="external">CommonJS</a> brings up using <code>require</code>, <code>exports</code> to resolve modules. It seems really nice when using in nodejs, however, when it meets browser, it works not quite well. The reason is simply that browser does not support synchronous <code>require</code>, it can not load a script from file I/O. Then <a href="https://github.com/amdjs/amdjs-api/wiki/AMD" target="_blank" rel="external">AMD</a> comes up a specification used well for browser, as the AMD says:  </p>
 <a id="more"></a>
 
 <blockquote>
@@ -94,7 +94,7 @@
 
 <p>AMD has two main concerns:  </p>
 <h3 id="asynchronous_loading_script">asynchronous loading script</h3>
-<p>this works well in browser, and fascinates developers a lot, developers write modular scripts in different files, different modules can have be dependent with some others, which makes codes resuable, moreover debug and edit files are quite simple and smooth.  </p>
+<p>this works well in browser, and fascinates developers a lot, developers write modular scripts in different files, different modules can be dependent with some others, which makes codes resuable, moreover debug and edit files are quite simple and smooth.  </p>
 <h3 id="use_define_to_define_a_module_and_its_dependecies">use <code>define</code> to define a module and its dependecies</h3>
 <p>to use AMD, the module must use <code>define</code> which really makes developers messy.<br>when using AMD, it is easy to run into the following road-blocks:  </p>
 <ul>
@@ -104,7 +104,7 @@
 <li>Where is the root of my application ? Should I write a alias to use it ?</li>
 <li>What about sharing code client/server ? </li>
 </ul>
-<p>AMD especially <a href="http://requirejs.org/docs/api.html" target="_blank" rel="external">requirejs</a> has its answers for every question. AMD’s answer for <code>nearly every one of them</code> is to <code>add some configuration directivers</code> or <code>write a r.js plug-in</code>.<br>Then we write configrutions file with many lines long of obscure directives, and these files are hard to be reused for example, using for the tests  </p>
+<p>AMD especially <a href="http://requirejs.org/docs/api.html" target="_blank" rel="external">requirejs</a> has its answers for every question. AMD’s answer for <code>nearly every one of them</code> is to <code>add some configuration directivers</code> or <code>write a r.js plug-in</code>.<br>Then we write configrutions file with many lines long of obscure directives, and these files are hard to be reused for example, used for the tests.  </p>
 <p>So, what about asynchronous loading scripts without using AMD like <code>define</code> or writing messy configuration file ?<br>This is what <a href="http://bearcatjs.org" target="_blank" rel="external">bearcat</a> tries to make an effort, which enables developers to write <code>magic, self-described javaScript objects</code> and simply register them to bearcat, bearcat will resolve dependencies, asynchronous loading srcipts when needed, ready for you to use. There are no <code>define</code>, no <code>require</code>, no <code>bundle file</code>, everything is simple, easy, and back to javaScript nature.  </p>
 <h2 id="Show_me_some_codes">Show me some codes</h2>
 <p>Let’s begin with a dead simple example:<br>A simple car must have an engine to startup, so you write two files. </p>
@@ -144,19 +144,19 @@
 <li>when car invokes <code>run</code> method, engine is also ready to <code>run</code></li>
 </ul>
 <p>So, as you can see, what bearcat does is <code>dependency injection with asynchronous loading</code>.  </p>
-<p>the whole demo sources can be found on <a href="https://github.com/bearcatjs/bearcat-examples" target="_blank" rel="external">AMD vs bearcat</a></p>
+<p>the whole demo sources can be found on <a href="https://github.com/bearcatjs/bearcat-examples/tree/master/bearcat-vs-AMD" target="_blank" rel="external">AMD vs bearcat</a></p>
 <h2 id="AMD_vs_bearcat">AMD vs bearcat</h2>
 <h3 id="module_dependency">module dependency</h3>
 <ul>
 <li>AMD resolves script files as modules, modules use <code>define</code> to resolve dependencies, <code>define</code> makes it hard be compatible especially when some library does not provides <code>define</code> hook. Besides, modules are relative to some others, thus are <code>tightly</code> coupled, so unit-tests will be quite messy.    </li>
-<li>bearcat resolves script files also as modules, modules are all simple javaScript objects, which are quite compatible with javaScript world. modules use magic, self-described attributes to resolve dependencies, moreover with dependency injection, therefore, modules are <code>loosely</code> coupled, unit-tests will be easy and simple.  </li>
+<li>bearcat resolves script files also as modules, modules are all simple javaScript objects, which are compatible with javaScript world. modules use magic, self-described attributes to resolve dependencies through dependency injection, therefore, modules are <code>loosely</code> coupled, unit-tests will be easy and simple.  </li>
 </ul>
 <h3 id="script_loading">script loading</h3>
 <p>AMD and bearcat both supports asynchronous scripts loading as needed, both are easy to edit and debug.  </p>
 <h3 id="configuration">configuration</h3>
 <ul>
 <li>AMD(requirejs) needs to config for <code>baseUrl</code>, <code>shim</code>, <code>alias</code>, <code>packages</code> etc … What’s more, this configuration file can not be shared very well. When you want to use in another project or for use in unit-test, you should modifiy configuration file to make AMD happy.    </li>
-<li>bearcat does not need much configuration, as you can see, all configurations are embeded into javaScript objects themselves, that’s it, then bearcat will do the following work, to resolve dependency, asynchronously load script file if needed, create instance and inject it.  </li>
+<li>bearcat does not need much configuration, as you can see, all configurations are embeded into javaScript objects themselves, that’s it, then bearcat will do the following work, resolve dependency, asynchronously load script file if needed, create instance and inject it.  </li>
 </ul>
 <h2 id="Want_to_use_a_libray_?">Want to use a libray ?</h2>
 <p>bearcat does not care about how to use a library, as long as it is a javaScript library, can be used in browser, it is ok. bearcat also does not resolve library as a dependency, for this concern, developers can try to using bearcat with <a href="http://browserify.org/" target="_blank" rel="external">browserify</a> for example.  </p>

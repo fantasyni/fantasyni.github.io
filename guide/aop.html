@@ -92,7 +92,7 @@
 <div class="content guide with-sidebar">
     <h1>Aspect Object Programming</h1>
     <h2 id="Introduction">Introduction</h2>
-<p>Aspect-Oriented Programming (AOP) complements Object-Oriented Programming (OOP) by providing another way of thinking about program structure. The key unit of modularity in OOP is the class, whereas in AOP the unit of modularity is the aspect. Aspects enable the modularization of concerns such as transaction management that cut across multiple types and objects. (Such concerns are often termed crosscutting concerns in AOP literature.)  </p>
+<p>Aspect-Oriented Programming (AOP) complements Object-Oriented Programming (OOP) by providing another way of thinking about program structure. The key unit of modularity in OOP is the class, whereas in AOP the unit of modularity is the aspect. Aspects enable the modularization of concerns such as transaction management that cut across multiple types and objects. (Such concerns are often termed crosscutting concerns in AOP literature)  </p>
 <h2 id="AOP_concepts">AOP concepts</h2>
 <ul>
 <li>Aspect: a modularization of a concern that cuts across multiple classes. Transaction management is a good example of a crosscutting concern in enterprise Node.js applications.  </li>
@@ -112,7 +112,7 @@
 </ul>
 <p>Bearcat supports <strong><em>Before advice</em></strong>, <strong><em>After returning advice</em></strong> and <strong><em>Around advice</em></strong>, since throwing an exception is not a best practise in Node.js.</p>
 <h2 id="Declaring_an_aspect">Declaring an aspect</h2>
-<p>In Bearcat, an aspect is also a simple POJO, it is treated the same as other POJOs managed by Bearcat, so you can inject other beans into an aspect quite easily.<br>In an aspect, you should define advices, you can refer to <a href="#declaring-an-advice">declaring an advice part</a>  </p>
+<p>In Bearcat, an aspect is also a simple javaScript object, it is treated the same as other javaScript objects managed by Bearcat, so you can inject other beans into an aspect quite easily.<br>In an aspect, you should define advices, you can refer to <a href="#Declaring_an_advice">declaring an advice part</a>  </p>
 <h2 id="Declaring_an_advice">Declaring an advice</h2>
 <p>advice is a function in an aspect, advice function’s last argument must be a <strong><em>next</em></strong> callback function to tell the AOP framework the end of the current advice execution.<br>In configuration metadata, you can use the <strong><em>advice</em></strong> attribute to specify the name of the advice in the current aspect.   </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"advice"</span>: <span class="string">"doBefore"</span></div></pre></td></tr></table></figure>
@@ -166,7 +166,7 @@
 <p>a simple aspect example  </p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Aspect = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"aspect"</span>;</div><div class="line">    <span class="keyword">this</span>.$aop = <span class="literal">true</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">Aspect.prototype.doBefore = <span class="function"><span class="keyword">function</span><span class="params">(next)</span> </span>{</div><div class="line">    <span class="keyword">var</span> $pointcut = <span class="string">"before:.*?runBefore"</span>;</div><div class="line">    <span class="keyword">var</span> $order = <span class="number">10</span>;</div><div class="line"></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Aspect doBefore'</span>);</div><div class="line">    next();</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = Aspect;</div></pre></td></tr></table></figure>
 
-<p><a href="https://github.com/bearcatnode/bearcat/tree/master/examples/aop_annotation" target="_blank" rel="external">aop_annoation examples</a></p>
+<p><a href="https://github.com/bearcatjs/bearcat/tree/master/examples/aop_annotation" target="_blank" rel="external">aop_annoation examples</a></p>
 
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>

@@ -107,7 +107,7 @@
 <h2 id="use">use</h2>
 <p>add async loading beans, this just add beans needed to be loaded to bearcat.</p>
 <p>examples:  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">bearcat.<span class="built_in">load</span>([<span class="string">'car'</span>]);</div><div class="line">bearcat.<span class="built_in">load</span>(<span class="string">'car'</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">bearcat.<span class="keyword">use</span>(['car']);</div><div class="line">bearcat.<span class="keyword">use</span>('car');</div></pre></td></tr></table></figure>
 
 <ul>
 <li>@param  {Array|String} async loading beans id</li>
@@ -178,7 +178,7 @@
 <p>examples:  </p>
 </li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bearcat.getBeanByMeta({</div><div class="line">	 id: <span class="string">"car"</span>,</div><div class="line">	 func: Car <span class="comment">// Car is a function constructor</span></div><div class="line">});</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bearcat.getBeanByMeta({</div><div class="line">   id: <span class="string">"car"</span>,</div><div class="line">   func: Car <span class="comment">// Car is a function constructor</span></div><div class="line">});</div></pre></td></tr></table></figure>
 
 <ul>
 <li>@param  {Object} meta meta object</li>
