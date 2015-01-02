@@ -71,7 +71,21 @@
     <div class="post">
         <h2><a href="/2015/01/02/browserify-with-asynchronous-script-loading/">browserify with asynchronous script loading​</a></h2>
         <h4>Jan 2, 2015</h4>
-        <div></div>
+        <div><h2 id="Overview">Overview</h2>
+<p><a href="https://github.com/substack/node-browserify" target="_blank" rel="external">browserify</a> is a great project that makes npm everywhere.  </p>
+<p><code>Browserify lets you require(&#39;modules&#39;) in the browser by bundling up all of your dependencies.</code>  </p>
+<p>It is really cool since developers can now use modules from npm which is growing extremely fast, more and more front-end libraries, tools, frameworks are now supporting npm, it is a great advantage. browserify makes it real for front-end developers to use npm modules without much pains.  </p>
+<p>browserify uses the same module system as node, it is called <a href="http://nodejs.org/docs/latest/api/modules.html" target="_blank" rel="external">node-flavored</a> CommonJS modules. It uses <code>require</code>, <code>exports</code> to organize modules, and uses <code>package.json</code>, <code>node_modules</code> to make module reuseable.  </p>
+<p>therefore, you write node-style modular codes, you can test in node, then if you want to use in the browser, you bundle it through <code>browserify</code> command：  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="input"><span class="prompt">browserify hello.js &gt;</span> bundle.js</span></div></pre></td></tr></table></figure>
+
+<p>now <code>bundle.js</code> contains all the javascript that <code>hello.js</code> needs to work. To use in the browser, just plop it into a single <code>script</code> tag in some html：  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="title">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"bundle.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="title">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></div></pre></td></tr></table></figure>
+
+
+
+<p>as you see, browserify bundles all modular codes in a build process, then it uses the final bundle file, not your original source codes. So when <code>bundle.js</code> file loaded in the browser, all your modular codes are loaded and mapped so that node-style CommonJS <code>require</code> can be worked in the browser. The build process that is always needed, is a problem that not only browserify faces, other browser CommonJS module system(like component, duo, webpack) also faces. </p>
+</div>
         <a href="/2015/01/02/browserify-with-asynchronous-script-loading/">... continue reading</a>
     </div>
 

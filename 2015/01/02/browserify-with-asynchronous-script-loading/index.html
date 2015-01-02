@@ -101,6 +101,8 @@
 
 
 <p>as you see, browserify bundles all modular codes in a build process, then it uses the final bundle file, not your original source codes. So when <code>bundle.js</code> file loaded in the browser, all your modular codes are loaded and mapped so that node-style CommonJS <code>require</code> can be worked in the browser. The build process that is always needed, is a problem that not only browserify faces, other browser CommonJS module system(like component, duo, webpack) also faces. </p>
+<a id="more"></a>
+
 <h2 id="browserify_problems">browserify problems</h2>
 <p>All problems browserify faces come from the annoying <code>build process</code>, it is not exist in nodejs environment, however when in browser environment it is a must to make CommonJS work.<br>Then developers have to edit the code, build the bundle, set up a debugger, find the source, edit the code, then build the bundle again…<br>Coding and editing will be not easy for most developers, although browserify provides some usefull tools to resolve all these pains:  </p>
 <ul>
