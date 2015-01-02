@@ -220,7 +220,7 @@
 <p>bearcat 的简洁，异步加载的module，无需打包，所见即所得，在编写应用层代码上有非常大的便利<br>browserify 可以直接复用 npm 上的 module，使用第三方库非常的方便  </p>
 <p>bearcat + browserify 会是一个不错的组合  </p>
 <p>一个例子，基于 bearcat + browserify 的 markdwon-editor  </p>
-<p>bearcat 与 browserify 直接通过一个<code>requireUtil</code>（比如）的module来进行连接</p>
+<p>bearcat 与 browserify 之间通过一个<code>requireUtil</code>（比如）的module来进行连接</p>
 <p>在这个 <code>requireUtil</code> 可以使用 browserify 的 require，用这个 require 来引入第三方库，比如marked库  </p>
 <p>requireUtil.js</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> RequireUtil = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"requireUtil"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.brace = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">this</span>.marked = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">    </div><div class="line">RequireUtil.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.brace = <span class="built_in">require</span>(<span class="string">'brace'</span>);</div><div class="line">    <span class="keyword">this</span>.marked = <span class="built_in">require</span>(<span class="string">'marked'</span>);</div><div class="line">}</div><div class="line">     </div><div class="line">bearcat.module(RequireUtil, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
@@ -231,11 +231,11 @@
 
 
 
-<p>这样子一来，编写业务层代码由于是由bearcat管理的，javaScript依赖异步加载，代码编写和debug就和AMD一样，所见即所得，设置断点什么的，再也不用担心找不到源文件（或者需要source map）<br>使用 browserify 仅仅是为了用它来引入第三方库，且也仅仅当引入一个新的第三方库的时候才会执行一下 browserify 的 build  </p>
+<p>这样子一来，编写业务层代码由于是bearcat管理的，javaScript依赖异步加载，代码编写和debug就和AMD一样，所见即所得，设置断点什么的，再也不用担心找不到源文件（或者需要source map）<br>使用 browserify 仅仅是为了用它来引入第三方库，且也仅仅当引入一个新的第三方库的时候才会执行一下 browserify 的 build  </p>
 <p>bearcat 和 browserify 的优势就都发挥了出来，提高了开发的效率以及可维护性  </p>
 <p>bearcat-markdown-editor 官网例子地址 <a href="http://bearcatjs.org/examples/markdown-editor.html" target="_blank" rel="external">markdown-editor</a></p>
 <h3 id="总结">总结</h3>
-<p>无论是CommonJS、AMD或者是dependency injection，单独使用某一个，javaScript依赖管理都不是完美的<br>面对不同的场景，使用不同的方案  </p>
+<p>无论是CommonJS、AMD或者是dependency injection，单独使用某一个，javaScript依赖管理都不是完美的<br>应人而异，各取所需  </p>
 <h3 id="参考">参考</h3>
 <ul>
 <li><a href="http://martinfowler.com/articles/injection.html" target="_blank" rel="external">martin fowlter dependency injection</a></li>
