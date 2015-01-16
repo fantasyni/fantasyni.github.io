@@ -330,7 +330,7 @@ body {
 #example code,
 #example pre {
   background-color: transparent;
-  height: 180px;
+  height: 200px;
 }
 #example figure.highlight {
   margin: 0;
@@ -371,7 +371,7 @@ body {
 }
 #example .gists {
   float: left;
-  margin-left: 20px;
+  margin-left: 66px;
 }
 #features {
   text-align: center;
