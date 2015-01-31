@@ -101,7 +101,7 @@
 <ul>
 <li>name : specify the name of the project or library  </li>
 <li>beans : specify the beans metadata definitions to be managed in the container, it is an array with the element of <a href="/guide/magic-javaScript-objects-in-details.html#Bean_attribute">bean metas</a></li>
-<li>scan : scan paths for auto-wired code-based metadata beans  </li>
+<li>scan : scan paths for auto-wired code-based metadata beans, it can be simple path of type String and multiple paths of type Array</li>
 <li>imports : an array defines imported context.json paths  </li>
 <li>dependencies : specify the beans from the dependency module to be managed in the container  </li>
 <li>namespace : specify the namespace of beans defined in context.json configuration metadatas<br>in bearcat, the actual id will be <strong><em>namespace:id</em></strong><br>therefore, when you use dependency injection or getBean, you should add the namespace  </li>
