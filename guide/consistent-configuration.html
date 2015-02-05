@@ -101,9 +101,13 @@
 <p>placeHolder is a signature indicating the place to be replaced by the specific envrioment value<br>in Bearcat, the placeHolder can be like this:  </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">${car.num}</span></div></pre></td></tr></table></figure>
 
-<p>then in config.json file you can define <strong><em>car.num</em></strong> with the specific value  </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    <span class="string">"car.num"</span>: <span class="number">100</span></div><div class="line">}</div></pre></td></tr></table></figure>
+<p>in car.js  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">    <span class="keyword">this</span>.$Vnum = <span class="string">"${car.vnum}"</span>;</div><div class="line">    <span class="keyword">this</span>.num = <span class="string">"${car.num}"</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
 
+<p>then in config.json file you can define <strong><em>car.num</em></strong> with the specific value  </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    <span class="string">"car.num"</span>: <span class="number">100</span>,</div><div class="line">    <span class="string">"car.vnum"</span>: <span class="number">101</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>then in car, <strong><em>$Vnum</em></strong> and <strong><em>num</em></strong> attributes will be injected with the right value in the config.json file, both styles are supported    </p>
 <h2 id="Environment_configuration">Environment configuration</h2>
 <p>In Bearcat, you can write different environment configurations in the following structure:<br><img src="https://raw.githubusercontent.com/wiki/bearcatnode/bearcat/images/configuration-structure.png" alt="directory structure"></p>
 <p>in directory named <strong><em>config</em></strong>, you put <strong><em>dev</em></strong> and <strong><em>prod</em></strong> sub-directory named by specific envrioment, and then write the specific configurations in these directory corresponding to each environment.  </p>
