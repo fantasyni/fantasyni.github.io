@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>bearcat 0.3.6 更新日志 - bearcat</title>
+        <title>javaScript 依赖管理 - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
-            window.PAGE_TYPE = "博客"
+            window.PAGE_TYPE = "博客_"
         </script>
         <link rel="stylesheet" href="/css/page.css" type="text/css">
 
@@ -68,49 +68,18 @@
 
     </ul>
     <div class="list">
-        <h2>博客</h2>
+        <h2>博客_</h2>
         <ul class="menu-root">
             
-                <li><a href="/博客/index.html" class="sidebar-link">javaScript 依赖管理</a></li>
-            
-                <li><a href="/博客/release-0.3.6.html" class="sidebar-link current">bearcat 0.3.6 更新日志</a></li>
-            
-                <li><a href="/博客/release-0.3.14.html" class="sidebar-link">bearcat 0.3.14 更新日志</a></li>
-            
-                <li><a href="/博客/release-0.4.0.html" class="sidebar-link">bearcat 0.4.0 更新日志</a></li>
+                <li><a href="/博客/model.html" class="sidebar-link current">javaScript 依赖管理</a></li>
             
         </ul>
     </div>
 </div>
 
-<div class="content 博客 with-sidebar">
-    <h1>bearcat 0.3.6 更新日志</h1>
-    <h2 id="热更新">热更新</h2>
-<p>本次升级主要是优化了热更新，热更新的原理还是基于bearcat IoC 动态替换 javaScript 对象的 prototype 里面的方法，之前热更新watch file是通过nodejs自带的fs.watch实现的，现在版本基于 <a href="https://github.com/paulmillr/chokidar" target="_blank" rel="external">chokidar</a> 库实现，可以支持多层目录的监听热更新，而不是之前版本的只能监听一级文件夹下面的文件，因为可以直接指定源码文件夹即可（默认就是app目录），更新里面的代码，只要是松散耦合，并不存在引用依赖的，就可以热更新</p>
-<h2 id="使用">使用</h2>
-<p>启动bearcat时传入两个参数  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">bearcat</span><span class="class">.createApp</span>(<span class="attr_selector">[contextPath]</span>, <span class="rules">{</span></div><div class="line">	<span class="rule"><span class="attribute">BEARCAT_HOT</span>:<span class="value"> <span class="string">'on'</span>,</span></span></div><div class="line">	BEARCAT_HPATH: <span class="string">'setup your hot reload source path'</span></div><div class="line">})</div></pre></td></tr></table></figure>
-
-<ul>
-<li>BEARCAT_HOT: 传入 ‘on’ 来开启热更新，默认是关的 </li>
-<li>BEARCAT_HPATH: 设置热更新的扫描路径，默认是app文件夹</li>
-</ul>
-<p>更多详情还请看官方文档 <a href="http://bearcatjs.org/topic/index.html" target="_blank" rel="external">bearcat hot reload</a></p>
-
+<div class="content 博客_ with-sidebar">
+    <h1>javaScript 依赖管理</h1>
     
-    <div id="disqus_thread"></div>
-	<script type="text/javascript">
-	    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-	    var disqus_shortname = 'bearcatjs'; // required: replace example with your forum shortname
-
-	    /* * * DON'T EDIT BELOW THIS LINE * * */
-	    (function() {
-	        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-	        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-	        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	    })();
-	</script>
-	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>

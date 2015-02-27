@@ -73,6 +73,8 @@
             
                 <li><a href="/api/index.html" class="sidebar-link current">bearcat api</a></li>
             
+                <li><a href="/api/model.html" class="sidebar-link">model api</a></li>
+            
         </ul>
     </div>
 </div>
@@ -168,6 +170,17 @@
 <ul>
 <li>@param  {String}   beanName</li>
 <li>@return {Function} bean constructor function</li>
+<li><p>@api public</p>
+<h2 id="getModel">getModel</h2>
+<p>get model from bearcat through modelId.</p>
+<p>examples:  </p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// through modelId</span></div><div class="line"><span class="keyword">var</span> carModel = bearcat.getModel(<span class="string">"car"</span>);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>@param  {String}   modelId</li>
+<li>@return {Object}   model</li>
 <li><p>@api public</p>
 <h2 id="getBeanByFunc">getBeanByFunc</h2>
 <p>get bean from IoC container through $ annotation function.</p>

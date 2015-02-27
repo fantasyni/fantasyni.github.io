@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>bearcat 0.3.14 更新日志 - bearcat</title>
+        <title>model api - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
         <link rel="icon" href="/images/logo.png" type="image/x-icon">
         <script>
-            window.PAGE_TYPE = "博客"
+            window.PAGE_TYPE = "api"
         </script>
         <link rel="stylesheet" href="/css/page.css" type="text/css">
 
@@ -44,7 +44,7 @@
     </a>
     <ul id="nav">
         <li><a href="/guide/" class="nav-link">Guide</a></li>
-<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="/topic/" class="nav-link">Topic</a></li>
@@ -60,7 +60,7 @@
     <div class="sidebar">
     <ul class="main-menu">
         <li><a href="/guide/" class="nav-link">Guide</a></li>
-<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/api/" class="nav-link current">API Reference</a></li>
 <li><a href="/examples/" class="nav-link">Examples</a></li>
 <li><a href="/blog/" class="nav-link">Blog</a></li>
 <li><a href="/topic/" class="nav-link">Topic</a></li>
@@ -68,43 +68,64 @@
 
     </ul>
     <div class="list">
-        <h2>博客</h2>
+        <h2>Api</h2>
         <ul class="menu-root">
             
-                <li><a href="/博客/index.html" class="sidebar-link">javaScript 依赖管理</a></li>
+                <li><a href="/api/index.html" class="sidebar-link">bearcat api</a></li>
             
-                <li><a href="/博客/release-0.3.6.html" class="sidebar-link">bearcat 0.3.6 更新日志</a></li>
-            
-                <li><a href="/博客/release-0.3.14.html" class="sidebar-link current">bearcat 0.3.14 更新日志</a></li>
-            
-                <li><a href="/博客/release-0.4.0.html" class="sidebar-link">bearcat 0.4.0 更新日志</a></li>
+                <li><a href="/api/model.html" class="sidebar-link current">model api</a></li>
             
         </ul>
     </div>
 </div>
 
-<div class="content 博客 with-sidebar">
-    <h1>bearcat 0.3.14 更新日志</h1>
-    <h2 id="优化一致性配置">优化一致性配置</h2>
-<p>本次升级主要是优化了bearcat提供的一致性配置<br>之前在把配置依赖注入到bean中，需要指定属性名称为 $V 开头的，现在不需要了，直接用 ${} 占位符的value属性即可  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">	<span class="keyword">this</span>.$Vnum = <span class="string">"${car.vnum}"</span>;</div><div class="line">	<span class="keyword">this</span>.num = <span class="string">"${car.num}"</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+<div class="content api with-sidebar">
+    <h1>model api</h1>
+    <h2 id="$set">$set</h2>
+<p> set key/value to model</p>
+<ul>
+<li>@param  {String}     key</li>
+<li>@param  {Object}     value</li>
+<li>@return {Object}     Error object when set value failed</li>
+<li>@api public</li>
+</ul>
+<h2 id="$get">$get</h2>
+<p> get data from model</p>
+<ul>
+<li>@param  {String} key</li>
+<li>@return {Object} data value</li>
+</ul>
+<h2 id="$pack">$pack</h2>
+<p> pack data object to model</p>
+<ul>
+<li>@param  {Object}     data</li>
+<li>@return {Object}     Error object when pack data failed</li>
+<li>@api public</li>
+</ul>
+<h2 id="$packResultSet">$packResultSet</h2>
+<p>pack database resultSet data to model</p>
+<ul>
+<li>@param  {Object}     resultSet data</li>
+<li>@return {Object}     Error object when pack resultSet failed</li>
+</ul>
+<h2 id="$before">$before</h2>
+<p>set before filters to model</p>
+<p>filter can be String which is the name of the filter method in the model<br>or can be Array which contains the filter methods in order</p>
+<p>examples:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">model.<span class="variable">$before</span>(<span class="string">'checkNum'</span>).<span class="variable">$set</span>(<span class="string">'num'</span>, <span class="number">10</span>);</div><div class="line">model.<span class="variable">$before</span>([<span class="string">'checkNum'</span>, <span class="string">'checkRange'</span>]).<span class="variable">$set</span>(<span class="string">'num'</span>, <span class="number">100</span>);</div></pre></td></tr></table></figure>
 
-<p>更多详情还请看官方文档 <a href="http://bearcatjs.org/guide/consistent-configuration.html" target="_blank" rel="external">bearcat consistent configuration</a></p>
+<ul>
+<li>@param  {String|Array} before filter</li>
+<li>@api public</li>
+</ul>
+<h2 id="$after">$after</h2>
+<p>set after filters to model</p>
+<p>filter can be String which is the name of the filter method in the model<br>or can be Array which contains the filter methods in order</p>
+<ul>
+<li>@param  {String|Array} after filter</li>
+<li>@api public</li>
+</ul>
 
-    
-    <div id="disqus_thread"></div>
-	<script type="text/javascript">
-	    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-	    var disqus_shortname = 'bearcatjs'; // required: replace example with your forum shortname
-
-	    /* * * DON'T EDIT BELOW THIS LINE * * */
-	    (function() {
-	        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-	        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-	        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	    })();
-	</script>
-	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
 </div>

@@ -79,6 +79,8 @@
             
                 <li><a href="/guide/aop.html" class="sidebar-link">Aspect Object Programming</a></li>
             
+                <li><a href="/guide/model.html" class="sidebar-link">Model and Constraint</a></li>
+            
                 <li><a href="/guide/consistent-configuration.html" class="sidebar-link">Consistent-configuration</a></li>
             
                 <li><a href="/guide/magic-javaScript-objects-in-details.html" class="sidebar-link current">Magic javaScript object in detail</a></li>
@@ -116,6 +118,8 @@
 <p>Bean attribute will be wrapped into a <a href="https://github.com/bearcatjs/bearcat/blob/master/lib/beans/support/beanDefinition.js" target="_blank" rel="external">BeanDefinition</a> object.  </p>
 <ul>
 <li>id : the unique bean name in the current container, for container to lookup  </li>
+<li>mid : the unique model name in the current container, using bearcat.getModel(‘mid’) to get this model</li>
+<li>cid : the unique constraint name in the current container, set this id in model attribute value to enable this constraint  </li>
 <li>func : the constructor function for the bean  </li>
 <li>order : the order of instantiation when it is a singleton bean  </li>
 <li>init : init method which will be invoked after constructor function, init can be async  </li>
@@ -140,9 +144,12 @@
 <li>aop : to specify the bean is an <strong><em>aspect</em></strong> that defines pointcut and advice, it is an array.  <ul>
 <li>pointcut : defines the pointcut expression  </li>
 <li>advice : defines the advice method matches the pointcut</li>
-<li>runtime : set to true to specify that target method arguments will be passed to this advice  </li>
+<li>runtime : set to true to specify that target method arguments will be passed to this advice</li>
 </ul>
 </li>
+<li>table : the object relation mapping to database table name</li>
+<li>prefix : set the attribute with id = prefix + attribute name, to fill up with resultSet data</li>
+<li>constraint : set the constraint with primitive constraints, like this.$constraint = “$myNotNull”;  </li>
 </ul>
 
     
