@@ -86,7 +86,7 @@
 <div class="content 博客 with-sidebar">
     <h1>bearcat 0.4.0 更新日志</h1>
     <h2 id="bearcat_model">bearcat model</h2>
-<p>本次升级主要是对model进行了抽象，model 代表着系统中的一些数据，也就是一些javaScript对象，对这些数据还可以有操作，比如校验、数据处理、序列化、持久化等 。所有的这些操作，在 bearcat model，统一的抽象成 <strong><em>constraint</em></strong> 和 <strong><em>filter</em></strong>  </p>
+<p>本次升级主要是对model进行了抽象，model 代表着系统中的一些数据，也就是一些javaScript对象，对这些数据还可以有操作，比如校验、数据处理、序列化、持久化等 。所有的这些操作，在 bearcat model，统一的抽象成 <strong><em>constraint</em></strong> 和 <strong><em>filter</em></strong>。（在即将更新的 bearcat-dao 0.2 版本里面还可以看到 model 在数据库 O/R mapping 里面的抽象）  </p>
 <p>一个简单的 model 可以是这样的：  </p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> SimpleModel = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"simpleModel"</span>;</div><div class="line">    <span class="keyword">this</span>.num1 = <span class="number">0</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = SimpleModel;</div></pre></td></tr></table></figure>
 
@@ -123,7 +123,8 @@
 
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> filterModel = bearcat.getModel(<span class="string">'filterModel'</span>);</div><div class="line"><span class="keyword">var</span> r = filterModel.$before(<span class="string">'checkNum'</span>).$set(<span class="string">'num'</span>, <span class="number">5</span>); <span class="comment">// ok</span></div><div class="line"></div><div class="line">r = filterModel.$before(<span class="string">'checkNum'</span>).$set(<span class="string">'num'</span>, <span class="string">'aaa'</span>); <span class="comment">// error with the checkNum validation, r is the Error object</span></div><div class="line"><span class="keyword">if</span>(r) {</div><div class="line">    <span class="built_in">console</span>.log(r.stack);</div><div class="line">}</div><div class="line"></div><div class="line">r = filterModel.$before(<span class="string">'checkNum'</span>).$set(<span class="string">'num'</span>, <span class="number">20</span>);</div><div class="line"><span class="keyword">if</span> (r) {</div><div class="line">    <span class="built_in">console</span>.log(r.stack);</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>num 属性就限定必须是Number类型，且值要&lt;=10  </p>
+<p>这里通过 <a href="http://bearcatjs.org/api/model.html#\$before" target="_blank" rel="external">$before</a> api 来指定了 before filter</p>
+<p>num 属性就限定必须是Number类型，且值要 &lt;=10  </p>
 <p>对于after filer，可以添加一个数据处理的方法，用于对数据的后期处理，比如序列化、加密    </p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> FilterModel = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"filterModel"</span>;</div><div class="line">    <span class="keyword">this</span>.num = <span class="number">0</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">FilterModel.prototype.checkNum = <span class="function"><span class="keyword">function</span><span class="params">(key, value)</span> </span>{</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> value !== <span class="string">'number'</span>) {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'num must be number'</span>);</div><div class="line">    }</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (value &gt; <span class="number">10</span>) {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'num must be small than 10'</span>);</div><div class="line">    }</div><div class="line">}</div><div class="line">  </div><div class="line">FilterModel.prototype.transformNum = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.num = <span class="number">12345</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = FilterModel;</div></pre></td></tr></table></figure>
 
@@ -134,7 +135,7 @@
 <p>num 值经过after filter的 transformNum 方法之后就变成了 12345  </p>
 <h2 id="model_constraint">model constraint</h2>
 <p>约束描述了对model里的属性的规范、要求。然而，由于javaScript本身的动态性，属性在定义的时候是没有类型的，也就更不必提定义属性的约束了。开发者要实现约束，就必须实现一个validate方法，然后在需要约束的地方调用该方法来限定属性的约束。这个validate方法的粒度、复用性就成为了问题，而且属性的约束只有被validate方法调用到了才知道是怎样约束的，也不便于后期的维护。  </p>
-<p>描述总是优于硬编码，这就是 bearcat constraint 设计的一个原则。</p>
+<p>描述总是优于硬编码，这是 bearcat constraint 设计的一个原则。</p>
 <p>通过对属性进行一定的描述来进行规范，这里的描述就是约束，而约束是可以相互组合、叠加的、也可以带有参数来更好的复用  </p>
 <p>同样的，定义一个约束，就像定义一个对象  </p>
 <p>notNullConstraint.js  </p>
@@ -148,7 +149,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> constaintModel = bearcat.getModel(<span class="string">'constaintModel'</span>);</div><div class="line"><span class="keyword">var</span> r = constaintModel.$set(<span class="string">"num1"</span>); <span class="comment">// the Error object</span></div><div class="line"><span class="keyword">if</span>(r) {</div><div class="line">    <span class="built_in">console</span>.log(r.stack);</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p>然后我们拿到model，往 num1 属性 set 一个值，就触发了 myNotNull 这个约束  </p>
-<p>这样，约束可以自由的添加到需要的model属性里面，约束的触发完全由 bearcat 来触发  </p>
+<p>这样，约束可以自由的添加到需要的model属性里面，约束的触发完全由 bearcat 来管理    </p>
 <h2 id="constraint_组合">constraint 组合</h2>
 <p>约束是可以通过组合成为high level约束的，也即高阶约束  </p>
 <p>通过约束的组合可以带来如下好处：</p>
@@ -164,7 +165,7 @@
 <p>当然，这个例子的基础约束就一个，也可以添加其它基础约束，只需要依次添加约束id，并且以 ; 分隔即可  </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">this.<span class="variable">$constraint</span> = <span class="string">"<span class="variable">$myNotNull</span>;myType"</span></div></pre></td></tr></table></figure>
 
-<p>使用这个约束，就简单的把 <strong><em>mySize</em></strong> 添加到需要约束的model属性即可  </p>
+<p>要使用这个约束，简单的把 <strong><em>mySize</em></strong> 添加到需要约束的model属性即可  </p>
 <p>constraintModel.js  </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ConstaintModel = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"constaintModel"</span>;</div><div class="line">    <span class="keyword">this</span>.num = <span class="string">"$mySize"</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = ConstaintModel;</div></pre></td></tr></table></figure>
 
@@ -180,7 +181,7 @@
 <p>因此，我们可以在model属性列中，除了添加 mySize 约束外，还可以指定 约束参数 max 的值，比如 max = 5，限定 value 属性的长度不能大于5  </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">constaintModel<span class="built_in">.</span><span class="variable">$set</span>(<span class="string">"value"</span>, <span class="string">"aaa"</span>); <span class="comment">// ok</span></div><div class="line"></div><div class="line"><span class="built_in">var</span> value <span class="subst">=</span> constaintModel<span class="built_in">.</span><span class="variable">$get</span>(<span class="string">"value"</span>);</div><div class="line">console<span class="built_in">.</span><span class="keyword">log</span>(value);</div><div class="line"></div><div class="line">r <span class="subst">=</span> constaintModel<span class="built_in">.</span><span class="variable">$set</span>(<span class="string">"value"</span>, <span class="string">"aaaaaa"</span>); <span class="comment">// the Error object</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> (r) {</div><div class="line">    console<span class="built_in">.</span><span class="keyword">log</span>(r<span class="built_in">.</span><span class="built_in">stack</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>更多关于 bearcat model 请参见官方文档 <a href="">bearcat model</a></p>
+<p>更多关于 bearcat model 请参见官方文档 <a href="http://bearcatjs.org/guide/model.html" target="_blank" rel="external">bearcat model</a></p>
 
     
     <div id="disqus_thread"></div>
