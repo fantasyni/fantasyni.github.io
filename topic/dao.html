@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>data access - bearcat</title>
+        <meta charset="utf-8">
+        <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link rel="icon" href="/images/logo.png" type="image/x-icon">
+        <script>
+            window.PAGE_TYPE = "topic"
+        </script>
+        <link rel="stylesheet" href="/css/page.css" type="text/css">
+
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'bearcatjs.org');
+  ga('send', 'pageview');
+</script>
+        <script src="/js/vue.min.js"></script>
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/highlight.css">
+        <!--link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css"-->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+        <script type="text/javascript">
+            hljs.initHighlightingOnLoad();
+        </script>
+    </head>
+    <body>
+        <div id="mobile-bar">
+            <a class="menu-button"></a>
+            <a class="logo" href="/"></a>
+        </div>
+        
+        
+            <div id="header">
+    <a id="logo" href="/">
+        <img src="/images/logo.png">
+        <span>bearcat</span>
+    </a>
+    <ul id="nav">
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/examples/" class="nav-link">Examples</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="/topic/" class="nav-link current">Topic</a></li>
+<li><a href="https://github.com/bearcatjs/bearcat" target="_blank" class="nav-link">GitHub</a></li>
+
+    </ul>
+</div>
+        
+
+        <div id="main">
+            
+                
+    <div class="sidebar">
+    <ul class="main-menu">
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/examples/" class="nav-link">Examples</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="/topic/" class="nav-link current">Topic</a></li>
+<li><a href="https://github.com/bearcatjs/bearcat" target="_blank" class="nav-link">GitHub</a></li>
+
+    </ul>
+    <div class="list">
+        <h2>Topic</h2>
+        <ul class="menu-root">
+            
+                <li><a href="/topic/index.html" class="sidebar-link">code hot reload</a></li>
+            
+                <li><a href="/topic/dao.html" class="sidebar-link current">data access</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+<div class="content topic with-sidebar">
+    <h1>data access</h1>
+    <h2 id="Bearcat-dao_—_a_SQL_mapping_dao_framework">Bearcat-dao — a SQL mapping dao framework</h2>
+<h2 id="Overview">Overview</h2>
+<p><a href="https://github.com/bearcatjs/bearcat-dao" target="_blank" rel="external">bearcat-dao</a> is a DAO (domain access objects) framework for <a href="http://nodejs.org/" target="_blank" rel="external">node.js</a>. It implements SQL mapping as its main concept compared to O/R mapping, therefore SQL is still the main concern using with bearcat-dao, and bearcat-dao will map the datebase resultset into <a href="http://bearcatjs.org/guide/model.html" target="_blank" rel="external">bearcat model</a> object.  </p>
+<h2 id="SQL_mapping_vs_O/R_mapping">SQL mapping vs O/R mapping</h2>
+<p>Structured Query Language (SQL) has been around for a long time, relational database and SQL have been claimed to have stood the test of time. Moreover, we have experiences whereby the database and even the SQL itself have outlived the application source code, and even mulitiple versions of the source code.<br>SQL mapping is on the idea that there is value in relational database and SQL, developers write SQL and maps data resultsets into objects. Therefore, it is easy for enterprise application to optimize, reuse SQL, maintain.<br>In another way, O/R mapping enables developers to write mapping object to database table, ORM framework then generates the specific SQL to execute on the database. So, as we can see, developers have to take great knowledge of the ORM framework in order to use the database well, especially when optimization is needed.  </p>
+<h2 id="Model">Model</h2>
+<p>model definition is using <a href="http://bearcatjs.org/guide/model.html" target="_blank" rel="external">bearcat model</a><br>therefore it is easy to be mapped into table and setup constraint, relation  </p>
+<p>for example, if we have a test table with single primary id  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> test(</span></div><div class="line">    id <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'id'</span>,	</div><div class="line">    </div><div class="line">    <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (id)</div><div class="line">)<span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure>
+
+<p>the we can define the following model  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> TestModel = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"testModel"</span>;</div><div class="line">    <span class="keyword">this</span>.$table = <span class="string">"test"</span>;</div><div class="line">    <span class="keyword">this</span>.id = <span class="string">"$primary;type:Number"</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = TestModel;</div></pre></td></tr></table></figure>
+
+<p>in the <strong><em>TestModel</em></strong>, we use <strong><em>$table</em></strong> attribute to setup the mapping table name, in <strong><em>id</em></strong> attribute we use <strong><em>primary</em></strong> to mark it as a primary key, then we add with a type constraint    </p>
+<h2 id="Relation">Relation</h2>
+<p>Tables in relational database can have relations, there are one-to-one relation, one-to-many relation, many-to-many relation  </p>
+<h3 id="One-to-one_relation">One-to-one relation</h3>
+<p>One-to-one relation means in two models, one model has the reference of the other model  </p>
+<p>for example, if we have a <strong><em>test1</em></strong> table with primary id and reference id of the <strong><em>test2</em></strong> table  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> test1(</span></div><div class="line">    id <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'id'</span>,	</div><div class="line">    rid <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'reference to test2 id'</span>,	</div><div class="line">      </div><div class="line">    <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (id)</div><div class="line">)<span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="operator"><span class="keyword">create</span> <span class="keyword">table</span> test2(</span></div><div class="line">    id <span class="built_in">bigint</span>(<span class="number">20</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> COMMENT <span class="string">'id'</span>,	</div><div class="line">    </div><div class="line">    <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (id)</div><div class="line">)<span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</div></pre></td></tr></table></figure>
+
+<p>then we can define the following two models  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Test1Model = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"test1Model"</span>;</div><div class="line">    <span class="keyword">this</span>.$table = <span class="string">"test1"</span>;</div><div class="line">    <span class="keyword">this</span>.id = <span class="string">"$primary;type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.rid = <span class="string">"$type:Object;ref:test2Model"</span></div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = Test1Model;</div></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Test2Model = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"test2Model"</span>;</div><div class="line">    <span class="keyword">this</span>.$table = <span class="string">"test2"</span>;</div><div class="line">    <span class="keyword">this</span>.id = <span class="string">"$primary;type:Number"</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = Test2Model;</div></pre></td></tr></table></figure>
+
+<p>as we can see, in <strong><em>Test1Model.rid</em></strong> attribute we use <strong><em>ref:test2Model</em></strong> to set the reference to <strong><em>test2Model</em></strong>  </p>
+<h3 id="One-to-many_relation">One-to-many relation</h3>
+<p>One-to-many relation means one model refer to the array of other model. In the real world, for example, we can have a blog, and a blog have many commnets, so blog and comment are one-to-many relation.  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Test1Model = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"test1Model"</span>;</div><div class="line">    <span class="keyword">this</span>.$table = <span class="string">"test1"</span>;</div><div class="line">    <span class="keyword">this</span>.id = <span class="string">"$primary;type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.rid = <span class="string">"$type:Array;ref:test2Model"</span></div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = Test1Model;</div></pre></td></tr></table></figure>
+
+<p>therefore, in the above example, we simply modify the <strong><em>rid</em></strong> attribute type to <strong><em>Array</em></strong>, it becomes a one-to-many relation  </p>
+<h3 id="Many-to-many_relation">Many-to-many relation</h3>
+<p>many-to-many relation can be spilted into two one-many relation through middle table  </p>
+<h2 id="SQL_template">SQL template</h2>
+<p>When writing complex sql, it is not quite well writing as a String, the better way is using SQL template.  </p>
+<p>write SQL tempalte is easy  </p>
+<p>for example, we can define SQL template with id <strong><em>testResultSql</em></strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sql testResultSql</div><div class="line"><span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> test </span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+
+<p>then we can use this sql in dao, like this  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">domainDaoSupport.getList(<span class="string">"$testResultSql"</span>, <span class="literal">null</span>, <span class="string">"testModel"</span>, <span class="function"><span class="keyword">function</span><span class="params">(err, results)</span> </span>{</div><div class="line">     <span class="comment">// results is testModel type array</span></div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>in domainDaoSupport.getList api, the first argument can be SQL tempalte id, the second argument is the SQL arguments, the third argument is the SQL result mapping model id, then in the callback function, we can get the results which are already mapped with testModel array  </p>
+<p>Moreover, SQL template can include other SQL template</p>
+<p>for example  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">sql testResultSql</div><div class="line"><span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> ${testResultTable} </span></div><div class="line"><span class="keyword">end</span></div><div class="line"></div><div class="line"><span class="keyword">sql</span> testResultTable</div><div class="line">test</div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
+
+<p>then testResultSql template is equal to the above </p>
+<h2 id="ResultSet_mapping">ResultSet mapping</h2>
+<p>ResultSet is an array of field/value objects, therefore the process of mapping resultSet is like filling objects with specific key/value pairs, to make the key match with the resultSet, we can use <strong><em>prefix</em></strong> in <a href="http://bearcatjs.org/guide/model.html#model_magic_attribute_value" target="_blank" rel="external">model magic attribute value</a> or use <strong><em>prefix</em></strong> in <a href="http://bearcatjs.org/guide/magic-javaScript-objects-in-details.html" target="_blank" rel="external">model attribute</a> to mark all attributes in this model will be prefixed  </p>
+<p>for example, if you query for a resultSet like this  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[{</div><div class="line">	"<span class="attribute">id</span>": <span class="value"><span class="number">1</span></span>,</div><div class="line">	"<span class="attribute">title</span>": <span class="value"><span class="string">"blog_title"</span></span>,</div><div class="line">	"<span class="attribute">content</span>": <span class="value"><span class="string">"blog_content"</span></span>,</div><div class="line">	"<span class="attribute">create_at</span>": <span class="value"><span class="number">1234567</span></span>,</div><div class="line">	"<span class="attribute">update_at</span>": <span class="value"><span class="number">1234567</span></span></div><div class="line">}]</div></pre></td></tr></table></figure>
+
+<p>then mapping model can be like this  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> BlogModel = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"blogModel"</span>;</div><div class="line">    <span class="keyword">this</span>.$table = <span class="string">"ba_blog"</span>;</div><div class="line">    <span class="keyword">this</span>.id = <span class="string">"$primary;type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.aid = <span class="string">"$type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.title = <span class="string">"$type:String"</span>;</div><div class="line">    <span class="keyword">this</span>.content = <span class="string">"$type:String"</span>;</div><div class="line">    <span class="keyword">this</span>.create_at = <span class="string">"$type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.update_at = <span class="string">"$type:Number"</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = BlogModel;</div></pre></td></tr></table></figure>
+
+<p>if your resultSet is prefixed with <strong><em>blog_</em></strong> like this  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[{</div><div class="line">	"<span class="attribute">blog_id</span>": <span class="value"><span class="number">1</span></span>,</div><div class="line">	"<span class="attribute">blog_title</span>": <span class="value"><span class="string">"blog_title"</span></span>,</div><div class="line">	"<span class="attribute">blog_content</span>": <span class="value"><span class="string">"blog_content"</span></span>,</div><div class="line">	"<span class="attribute">blog_create_at</span>": <span class="value"><span class="number">1234567</span></span>,</div><div class="line">	"<span class="attribute">blog_update_at</span>": <span class="value"><span class="number">1234567</span></span></div><div class="line">}]</div></pre></td></tr></table></figure>
+
+<p>then mapping model will be like this  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> BlogModel = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$mid = <span class="string">"blogModel"</span>;</div><div class="line">    <span class="keyword">this</span>.$table = <span class="string">"ba_blog"</span>;</div><div class="line">    <span class="keyword">this</span>.$prefix = <span class="string">"blog_"</span>;</div><div class="line">    <span class="keyword">this</span>.id = <span class="string">"$primary;type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.aid = <span class="string">"$type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.title = <span class="string">"$type:String"</span>;</div><div class="line">    <span class="keyword">this</span>.content = <span class="string">"$type:String"</span>;</div><div class="line">    <span class="keyword">this</span>.create_at = <span class="string">"$type:Number"</span>;</div><div class="line">    <span class="keyword">this</span>.update_at = <span class="string">"$type:Number"</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = BlogModel;</div></pre></td></tr></table></figure>
+
+<p>just add <strong><em>this.$prefix</em></strong> model attribute  </p>
+<h2 id="DAO">DAO</h2>
+<p>DAO is short for domain access object, we can use DAO objects to manage database</p>
+<p>bearcat-dao provides <strong><em>domainDaoSupport</em></strong> wrapping basic sql and cache operations<br>add it with properties dependency injection, and init it by invoking <strong><em>initConfig</em></strong> method<br>then you can use domainDaoSupport convenient methods to wrap your own daos </p>
+<p>simpleDao.js</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> SimpleDao = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"simpleDao"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.$domainDaoSupport = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">SimpleDao.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="comment">// init with SimpleModel id to set up model mapping</span></div><div class="line">    <span class="keyword">this</span>.domainDaoSupport.initConfig(<span class="string">"simpleModel"</span>);</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="comment">// query list all</span></div><div class="line"><span class="comment">// callback return mapped SimpleModel array results</span></div><div class="line">SimpleDao.prototype.getList = <span class="function"><span class="keyword">function</span><span class="params">(cb)</span> </span>{</div><div class="line">    <span class="keyword">var</span> sql = <span class="string">' 1 = 1'</span>;</div><div class="line">    <span class="keyword">this</span>.$domainDaoSupport.getListByWhere(sql, <span class="literal">null</span>, <span class="literal">null</span>, cb);</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = SimpleDao;</div></pre></td></tr></table></figure>
+
+<p>api reference for <a href="http://bearcatjs.github.io/bearcat-dao/domainDaoSupport.js.html" target="_blank" rel="external">domainDaoSupport</a></p>
+<h2 id="Configuration">Configuration</h2>
+<p>add bearcat-dao to your project  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> bearcat-dao <span class="comment">--save</span></span></div></pre></td></tr></table></figure>
+
+
+
+<p>modify context.json used by your project<br><a href="http://bearcatjs.org/guide/consistent-configuration.html" target="_blank" rel="external">placeholds</a> can be nicely used to switch between contexts  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="string">"dependencies"</span>: {</div><div class="line">	<span class="string">"bearcat-dao"</span>: <span class="string">"*"</span></div><div class="line">},</div><div class="line"><span class="string">"beans"</span>: [{</div><div class="line">    <span class="string">"id"</span>: <span class="string">"mysqlConnectionManager"</span>,</div><div class="line">    <span class="string">"func"</span>: <span class="string">"node_modules.bearcat-dao.lib.connection.sql.mysqlConnectionManager"</span>,</div><div class="line">    <span class="string">"props"</span>: [{</div><div class="line">        <span class="string">"name"</span>: <span class="string">"port"</span>,</div><div class="line">        <span class="string">"value"</span>: <span class="string">"<span class="variable">${mysql.port}</span>"</span></div><div class="line">    }, {</div><div class="line">        <span class="string">"name"</span>: <span class="string">"host"</span>,</div><div class="line">        <span class="string">"value"</span>: <span class="string">"<span class="variable">${mysql.host}</span>"</span></div><div class="line">    }, {</div><div class="line">        <span class="string">"name"</span>: <span class="string">"user"</span>,</div><div class="line">        <span class="string">"value"</span>: <span class="string">"<span class="variable">${mysql.user}</span>"</span></div><div class="line">    }, {</div><div class="line">        <span class="string">"name"</span>: <span class="string">"password"</span>,</div><div class="line">        <span class="string">"value"</span>: <span class="string">"<span class="variable">${mysql.password}</span>"</span></div><div class="line">    }, {</div><div class="line">        <span class="string">"name"</span>: <span class="string">"database"</span>,</div><div class="line">        <span class="string">"value"</span>: <span class="string">"<span class="variable">${mysql.database}</span>"</span></div><div class="line">    }]</div><div class="line">}, {</div><div class="line">    <span class="string">"id"</span>: <span class="string">"redisConnectionManager"</span>,</div><div class="line">    <span class="string">"func"</span>: <span class="string">"node_modules.bearcat-dao.lib.connection.cache.redisConnectionManager"</span>,</div><div class="line">    <span class="string">"props"</span>: [{</div><div class="line">        <span class="string">"name"</span>: <span class="string">"port"</span>,</div><div class="line">        <span class="string">"value"</span>: <span class="string">"<span class="variable">${redis.port}</span>"</span></div><div class="line">    }, {</div><div class="line">        <span class="string">"name"</span>: <span class="string">"host"</span>,</div><div class="line">        <span class="string">"value"</span>: <span class="string">"<span class="variable">${redis.host}</span>"</span></div><div class="line">    }]</div><div class="line">}]</div></pre></td></tr></table></figure>
+
+<p>if you do not use redis, you can remove <strong><em>redisConnectionManager</em></strong> definition  </p>
+<h2 id="Transaction">Transaction</h2>
+<p>bearcat-dao provides transaction support based on <a href="http://bearcatjs.org/guide/aop.html" target="_blank" rel="external">bearcat AOP</a>. The aspect is <a href="https://github.com/bearcatjs/bearcat-dao/blob/master/lib/aspect/transactionAspect.js" target="_blank" rel="external">transactionAspect</a> which provides around advice, when target transaction method calls cb function with <strong><em>err</em></strong>, rollback will be emited, otherwise it will commit the operations.  </p>
+<p>The pointcut defined is:  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"pointcut"</span>: <span class="string">"around:.*?Transaction$"</span></div></pre></td></tr></table></figure>
+
+
+
+<p>Therefore, any POJO method match this pointcut can a transcation method<br>Since transaction must be within the same connection, in Bearcat-dao it is <strong><em>transactionStatus</em></strong>, daos under the transaction method must hold the same transactionStatus  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">SimpleService.prototype.testMethodTransaction = <span class="function"><span class="keyword">function</span><span class="params">(cb, txStatus)</span> </span>{</div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">  </div><div class="line">    <span class="keyword">this</span>.simpleDao1.transaction(txStatus).addPerson([<span class="string">'aaa'</span>], <span class="function"><span class="keyword">function</span><span class="params">(err, results)</span> </span>{</div><div class="line">        <span class="keyword">if</span> (err) {</div><div class="line">             <span class="keyword">return</span> cb(err); <span class="comment">// if err occur, rollback will be emited</span></div><div class="line">        }</div><div class="line">  </div><div class="line">        self.simpleDao2.transaction(txStatus).getList([<span class="number">1</span>, <span class="number">2</span>], <span class="function"><span class="keyword">function</span><span class="params">(err, results)</span> </span>{</div><div class="line">            <span class="keyword">if</span> (err) { </div><div class="line">                 <span class="keyword">return</span> cb(err); <span class="comment">// if err occur, rollback will be emited</span></div><div class="line">            }</div><div class="line"></div><div class="line">            cb(<span class="literal">null</span>, results); <span class="comment">// commit the operations</span></div><div class="line">        });</div><div class="line">    });</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h2 id="Enable_Debug_Mode">Enable Debug Mode</h2>
+<p>run with BEARCAT_DEBUG flag true  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="constant">BEARCAT_DEBUG</span>=<span class="literal">true</span> node xxx.js</div></pre></td></tr></table></figure>
+
+<h2 id="Examples">Examples</h2>
+<ul>
+<li><a href="https://github.com/bearcatnode/todo" target="_blank" rel="external">bearcat-todo</a> </li>
+<li><a href="https://github.com/bearcatjs/bearcat-examples/tree/master/bearcat-dao-example" target="_blank" rel="external">bearcat-dao example</a></li>
+</ul>
+
+    
+    <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
+</div>
+            
+        </div>
+
+        
+            <script src="/js/smooth-scroll.min.js"></script>
+            <script src="/js/common.js"></script>
+        
+
+    </body>
+</html>
