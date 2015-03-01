@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>bearcat 0.3.6 更新日志 - bearcat</title>
+        <title>bearcat-dao 0.2.0 更新日志 - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -73,31 +73,26 @@
             
                 <li><a href="/博客/index.html" class="sidebar-link">javaScript 依赖管理</a></li>
             
-                <li><a href="/博客/release-0.3.6.html" class="sidebar-link current">bearcat 0.3.6 更新日志</a></li>
+                <li><a href="/博客/release-0.3.6.html" class="sidebar-link">bearcat 0.3.6 更新日志</a></li>
             
                 <li><a href="/博客/release-0.3.14.html" class="sidebar-link">bearcat 0.3.14 更新日志</a></li>
             
                 <li><a href="/博客/release-0.4.0.html" class="sidebar-link">bearcat 0.4.0 更新日志</a></li>
             
-                <li><a href="/博客/bearcat-dao-release-0.2.0.html" class="sidebar-link">bearcat-dao 0.2.0 更新日志</a></li>
+                <li><a href="/博客/bearcat-dao-release-0.2.0.html" class="sidebar-link current">bearcat-dao 0.2.0 更新日志</a></li>
             
         </ul>
     </div>
 </div>
 
 <div class="content 博客 with-sidebar">
-    <h1>bearcat 0.3.6 更新日志</h1>
-    <h2 id="热更新">热更新</h2>
-<p>本次升级主要是优化了热更新，热更新的原理还是基于bearcat IoC 动态替换 javaScript 对象的 prototype 里面的方法，之前热更新watch file是通过nodejs自带的fs.watch实现的，现在版本基于 <a href="https://github.com/paulmillr/chokidar" target="_blank" rel="external">chokidar</a> 库实现，可以支持多层目录的监听热更新，而不是之前版本的只能监听一级文件夹下面的文件，因为可以直接指定源码文件夹即可（默认就是app目录），更新里面的代码，只要是松散耦合，并不存在引用依赖的，就可以热更新</p>
-<h2 id="使用">使用</h2>
-<p>启动bearcat时传入两个参数  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">bearcat</span><span class="class">.createApp</span>(<span class="attr_selector">[contextPath]</span>, <span class="rules">{</span></div><div class="line">	<span class="rule"><span class="attribute">BEARCAT_HOT</span>:<span class="value"> <span class="string">'on'</span>,</span></span></div><div class="line">	BEARCAT_HPATH: <span class="string">'setup your hot reload source path'</span></div><div class="line">})</div></pre></td></tr></table></figure>
-
-<ul>
-<li>BEARCAT_HOT: 传入 ‘on’ 来开启热更新，默认是关的 </li>
-<li>BEARCAT_HPATH: 设置热更新的扫描路径，默认是app文件夹</li>
-</ul>
-<p>更多详情还请看官方文档 <a href="http://bearcatjs.org/topic/index.html" target="_blank" rel="external">bearcat hot reload</a></p>
+    <h1>bearcat-dao 0.2.0 更新日志</h1>
+    <h2 id="概述">概述</h2>
+<p><a href="https://github.com/bearcatjs/bearcat-dao" target="_blank" rel="external">bearcat-dao</a> 是一个 node.js 基于 SQL mapping 的 DAO 框架。实现了基于 SQL mapping 来对数据结果集进行映射，是一种半自动化的模式，相比较于 O/R mapping 全自动化的模式。 因此，在 bearcat-dao 里，开发者还是能够对SQL进行完全的控制，通过SQL来与数据库打交道并进行性能优化，bearcat-dao 则会把数据结果集映射到 <a href="http://bearcatjs.org/guide/model.html" target="_blank" rel="external">bearcat model</a> 中去。  </p>
+<h2 id="SQL_mapping_vs_O/R_mapping">SQL mapping vs O/R mapping</h2>
+<p>结构化查询语言（SQL）已经存在了非常久的时间。自从 Edgar F.Codd 第一次提出“数据可以被规范化为一组相互关联的表”这样的思想以来，已经超过35年了。很少有哪一种软件技术敢声称自己像关系数据库和SQL那样经受住了时间的考验。因此，关系数据库和SQL仍然很有价值，我们可能都曾有这样的经历，应用程序的源代码（经历了很多版本）随着时间的流逝最终还是过时了（无法维护下去），但它的数据库甚至是SQL本身却仍然很有价值。</p>
+<p>O/R mapping 被设计为用来简化对象持久化工作的，它通过将SQL完全从开发人员的职责中排除来达到这个目的。在O/R mapping中，SQL是给予应用程序中的类与关系数据库表之间的映射关系而生成的。除了不用写SQL语句，使用O/R mapping的API通常也比典型的SQL API要简单很多，但是O/R mapping仍然不是一颗“银弹”，它并非适用于所有的场景。<br>一个最主要的问题就是O/R mapping它需要假设数据库是被恰当的规范化了，如果没有被恰当规范，这就会给映射带来许多麻烦，甚至需要绕些弯路，或者在设计时对效率做些折衷。没有哪一个对象/关系解决方案可以支持每一种数据库的每一种特性、每一种能力以及设计上固有的缺陷，它们仅仅能做到一个子集，而能做到全集的恰恰则是SQL这个专为数据库设计的结构化查询语言  </p>
+<p>SQL mapping 与 O/R mapping 不同，它不是直接把类映射为数据库表或者说把类的字段映射为数据库列，而是把SQL语句与结果（也即输入和输出）映射为类。bearcat-dao 在类（model）和数据库之间建立了一个额外的中间层，这就为如何在类和数据库表之间建立映射关系带来了更大的灵活性，使得在不用改变数据模型或者对象模型的情况下改变它们的映射关系成为可能。这个中间层其实就是SQL，通过SQL可以将类（model）与数据库表之间的关系降到最低。开发者只需要编写SQL，bearcat-dao负责在类（model）属性与数据库表的列之间映射参数和结果</p>
 
     
     <div id="disqus_thread"></div>
