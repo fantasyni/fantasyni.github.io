@@ -88,10 +88,10 @@
 <div class="content 博客 with-sidebar">
     <h1>bearcat-dao 0.2.0 更新日志</h1>
     <h2 id="概述">概述</h2>
-<p><a href="https://github.com/bearcatjs/bearcat-dao" target="_blank" rel="external">bearcat-dao</a> 是一个 node.js 基于 SQL mapping 的 DAO 框架。实现了基于 SQL mapping 来对数据结果集进行映射，是一种半自动化的模式，相比较于 O/R mapping 全自动化的模式。 因此，在 bearcat-dao 里，开发者还是能够对SQL进行完全的控制，通过SQL来与数据库打交道并进行性能优化，bearcat-dao 则会把数据结果集映射到 <a href="http://bearcatjs.org/guide/model.html" target="_blank" rel="external">bearcat model</a> 中去。  </p>
+<p><a href="https://github.com/bearcatjs/bearcat-dao" target="_blank" rel="external">bearcat-dao</a> 是一个 node.js 基于 SQL mapping 的 DAO 框架。实现了基于 SQL mapping 来对数据结果集进行映射，是一种半自动化的模式，相比较于 O/R mapping 全自动化的模式。 因此，在 bearcat-dao 里，开发者能够对SQL进行完全的控制，通过SQL来与数据库打交道并进行性能优化，bearcat-dao 则会把数据结果集映射到 <a href="http://bearcatjs.org/guide/model.html" target="_blank" rel="external">bearcat model</a> 中去。  </p>
 <h2 id="SQL_mapping_vs_O/R_mapping">SQL mapping vs O/R mapping</h2>
 <p>结构化查询语言（SQL）已经存在了非常久的时间。自从 Edgar F.Codd 第一次提出“数据可以被规范化为一组相互关联的表”这样的思想以来，已经超过35年了。很少有哪一种软件技术敢声称自己像关系数据库和SQL那样经受住了时间的考验。因此，关系数据库和SQL仍然很有价值，我们可能都曾有这样的经历，应用程序的源代码（经历了很多版本）随着时间的流逝最终还是过时了（无法维护下去），但它的数据库甚至是SQL本身却仍然很有价值。</p>
-<p>O/R mapping 被设计为用来简化对象持久化工作的，它通过将SQL完全从开发人员的职责中排除来达到这个目的。在O/R mapping中，SQL是给予应用程序中的类与关系数据库表之间的映射关系而生成的。除了不用写SQL语句，使用O/R mapping的API通常也比典型的SQL API要简单很多，但是O/R mapping仍然不是一颗“银弹”，它并非适用于所有的场景。<br>一个最主要的问题就是O/R mapping它需要假设数据库是被恰当的规范化了，如果没有被恰当规范，这就会给映射带来许多麻烦，甚至需要绕些弯路，或者在设计时对效率做些折衷。没有哪一个对象/关系解决方案可以支持每一种数据库的每一种特性、每一种能力以及设计上固有的缺陷，它们仅仅能做到一个子集，而能做到全集的恰恰则是SQL这个专为数据库设计的结构化查询语言  </p>
+<p>O/R mapping 被设计为用来简化对象持久化工作的，它通过将SQL完全从开发人员的职责中排除来达到这个目的。在O/R mapping中，SQL是给予应用程序中的类与关系数据库表之间的映射关系而生成的。除了不用写SQL语句，使用O/R mapping的API通常也比典型的SQL API要简单很多，但是O/R mapping仍然不是一颗“银弹”，它并非适用于所有的场景。<br>一个最主要的问题就是O/R mapping它需要假设数据库是被恰当的规范化了，如果没有被恰当规范，这就会给映射带来许多麻烦，甚至需要绕些弯路，或者在设计时对效率做些折衷。同时，没有哪一个对象/关系解决方案可以支持每一种数据库的每一种特性、每一种能力以及设计上固有的缺陷，它们仅仅能做到一个<strong><em>子集</em></strong>，而能做到全集的恰恰则是SQL这个专为数据库设计的结构化查询语言  </p>
 <p>SQL mapping 与 O/R mapping 不同，它不是直接把类映射为数据库表或者说把类的字段映射为数据库列，而是把SQL语句与结果（也即输入和输出）映射为类。bearcat-dao 在类（model）和数据库之间建立了一个额外的中间层，这就为如何在类和数据库表之间建立映射关系带来了更大的灵活性，使得在不用改变数据模型或者对象模型的情况下改变它们的映射关系成为可能。这个中间层其实就是SQL，通过SQL可以将类（model）与数据库表之间的关系降到最低。开发者只需要编写SQL，bearcat-dao 负责在类（model）属性与数据库表的列之间映射参数和结果</p>
 <h2 id="Model">Model</h2>
 <p>model 定义使用 <a href="http://bearcatjs.org/guide/model.html" target="_blank" rel="external">bearcat model</a><br>因此，可以非常容易的就设置映射关系、约束、relation关系  </p>
@@ -103,7 +103,7 @@
 
 <p>在 <strong><em>TestModel</em></strong> 里，我们使用 <strong><em>$table</em></strong> 属性来设置需要映射的表名，对于 <strong><em>id</em></strong> 属性，我们用 <strong><em>primary</em></strong> 表明这是一个主键，并且我们给这个字段添加了一个 <strong><em>type</em></strong> 约束，限定它一定为 Number 类型  </p>
 <h2 id="Relation">Relation</h2>
-<p>在关系型数据库的表与表之间是可以有 relation 的，也即关系，有一对一，一对多，多对多这三种情况  </p>
+<p>在关系型数据库的表与表之间是可以有 relation 的，也即关系，有一对一、一对多、多对多这三种情况  </p>
 <h3 id="一对一_relation">一对一 relation</h3>
 <p>一对一关系意味着两张表，一张表有另外一张表的id引用（或者外键）。在model对象里面就是说，两个model，是一对一的  </p>
 <p>比如，我们有两张表，<strong><em>test1</em></strong> 表有对 <strong><em>test2</em></strong> 表的 id 引用  </p>
@@ -129,7 +129,7 @@
 <h3 id="多对多_relation">多对多 relation</h3>
 <p>多对多一般可以通过中间表，来转化成两个一对多的关系</p>
 <h2 id="SQL_模板">SQL 模板</h2>
-<p>当编写复杂sql语句的时候，如果仅仅使用 String 来编写，肯定非常痛苦，更好的方式是用 SQL 模板  </p>
+<p>当编写复杂sql语句的时候，如果仅仅使用 String 类型的字符串来编写，肯定非常痛苦，更好的方式是用 SQL 模板  </p>
 <p>编写SQL模板相当简单    </p>
 <p>比如，我们可以定义 id 为 <strong><em>testResultSql</em></strong> 的 SQL 模板  </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sql testResultSql</div><div class="line"><span class="operator"><span class="keyword">select</span> * <span class="keyword">from</span> test </span></div><div class="line"><span class="keyword">end</span></div></pre></td></tr></table></figure>
@@ -170,7 +170,7 @@
 
 <p>如果你不需要使用redis, 你可以移除<strong><em>redisConnectionManager</em></strong>定义   </p>
 <h2 id="事务">事务</h2>
-<p>bearcat-dao 基于 <a href="https://github.com/bearcatjs/bearcat/wiki/Aspect-Object-Programming" target="_blank" rel="external">bearcat AOP</a> 提供了事务支持. aspect 是 <a href="https://github.com/bearcatjs/bearcat-dao/blob/master/lib/aspect/transactionAspect.js" target="_blank" rel="external">transactionAspect</a> , 提供了 around advice, 当目标事务方法调用cb函数的时候传入了 <strong><em>err</em></strong>, rollback 回滚操作就会被触发, 相反如果没有cb(err)的话, 事务就会被提交(commit).<br>pointcut 定义的是:  </p>
+<p>bearcat-dao 基于 <a href="http://bearcatjs.org/guide/aop.html" target="_blank" rel="external">bearcat AOP</a> 提供了事务支持. aspect 是 <a href="https://github.com/bearcatjs/bearcat-dao/blob/master/lib/aspect/transactionAspect.js" target="_blank" rel="external">transactionAspect</a> , 提供了 around advice, 当目标事务方法调用cb函数的时候传入了 <strong><em>err</em></strong>, rollback 回滚操作就会被触发, 相反如果没有cb(err)的话, 事务就会被提交(commit).<br>pointcut 定义的是:  </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"pointcut"</span>: <span class="string">"around:.*?Transaction"</span></div></pre></td></tr></table></figure>
 
 
@@ -181,6 +181,7 @@
 <p>跑node应用时带上BEARCAT_DEBUG为true</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="constant">BEARCAT_DEBUG</span>=<span class="literal">true</span> node xxx.js</div></pre></td></tr></table></figure>
 
+<p>开启debug模式后，就能看到具体执行SQL的日志  </p>
 <h2 id="例子">例子</h2>
 <ul>
 <li><a href="https://github.com/bearcatnode/todo" target="_blank" rel="external">bearcat-todo</a> </li>
