@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>cocos2d-js support - bearcat</title>
+        <meta charset="utf-8">
+        <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Lato|Inconsolata' rel='stylesheet' type='text/css'>
+        <link rel="icon" href="/images/logo.png" type="image/x-icon">
+        <script>
+            window.PAGE_TYPE = "topic"
+        </script>
+        <link rel="stylesheet" href="/css/page.css" type="text/css">
+
+        <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '', 'bearcatjs.org');
+  ga('send', 'pageview');
+</script>
+        <script src="/js/vue.min.js"></script>
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/highlight.css">
+        <!--link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css"-->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+        <script type="text/javascript">
+            hljs.initHighlightingOnLoad();
+        </script>
+    </head>
+    <body>
+        <div id="mobile-bar">
+            <a class="menu-button"></a>
+            <a class="logo" href="/"></a>
+        </div>
+        
+        
+            <div id="header">
+    <a id="logo" href="/">
+        <img src="/images/logo.png">
+        <span>bearcat</span>
+    </a>
+    <ul id="nav">
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/examples/" class="nav-link">Examples</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="/topic/" class="nav-link current">Topic</a></li>
+<li><a href="https://github.com/bearcatjs/bearcat" target="_blank" class="nav-link">GitHub</a></li>
+
+    </ul>
+</div>
+        
+
+        <div id="main">
+            
+                
+    <div class="sidebar">
+    <ul class="main-menu">
+        <li><a href="/guide/" class="nav-link">Guide</a></li>
+<li><a href="/api/" class="nav-link">API Reference</a></li>
+<li><a href="/examples/" class="nav-link">Examples</a></li>
+<li><a href="/blog/" class="nav-link">Blog</a></li>
+<li><a href="/topic/" class="nav-link current">Topic</a></li>
+<li><a href="https://github.com/bearcatjs/bearcat" target="_blank" class="nav-link">GitHub</a></li>
+
+    </ul>
+    <div class="list">
+        <h2>Topic</h2>
+        <ul class="menu-root">
+            
+                <li><a href="/topic/index.html" class="sidebar-link">code hot reload</a></li>
+            
+                <li><a href="/topic/dao.html" class="sidebar-link">data access</a></li>
+            
+                <li><a href="/topic/cocos2djs.html" class="sidebar-link current">cocos2d-js support</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+<div class="content topic with-sidebar">
+    <h1>cocos2d-js support</h1>
+    <h2 id="Overview">Overview</h2>
+<p><a href="https://github.com/cocos2d/cocos2d-js" target="_blank" rel="external">cocos2d-js</a> is an open source game engine for web games and native games, it is the HTML5 version of <a href="https://github.com/cocos2d/cocos2d-x" target="_blank" rel="external">cocos2d-x</a> includes <a href="https://github.com/cocos2d/cocos2d-html5" target="_blank" rel="external">cocos2d-html5</a> and cocos2d-x javaScript binding (JSB). Using Cocos2d-JS, you can write games in JavaScript and run your games on browsers that support HTML5. The API is completely compatible between Cocos2d-html5 and Cocos2d-x JSB. This means that Cocos2d-JS games can be run using Cocos2d’s “JavaScript Binding” on Cocos2d-x without or with very little modification.  </p>
+<p>However, there are some weaknesses when developing with cocos2d-js, the most principal one is the <strong><em>dependency management</em></strong>  </p>
+<p>Cocos2d-js uses <strong><em>global namespace</em></strong> to manage dependencies and use <strong><em>jsList</em></strong> configurations to load script files which are quite messy and frustrating, for this concern we can use <a href="https://github.com/bearcatjs/bearcat" target="_blank" rel="external">bearcat</a> to resolve javaScript dependency management, <a href="http://browserify.org/" target="_blank" rel="external">browserify</a> to require npm modules, <a href="http://gruntjs.com/" target="_blank" rel="external">grunt</a> to handle development workflow   </p>
+<h2 id="Startup">Startup</h2>
+<h3 id="Create_cocos2d-js_projects">Create cocos2d-js projects</h3>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cocos new <span class="operator">-l</span> js bearcat_cocos2d_js_example</div></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> bearcat_cocos2d_js_example/</div><div class="line">cocos run -p web</div></pre></td></tr></table></figure>
+
+<p>now you can see helloworld from your browser  </p>
+<h3 id="Setup_development_envrionment">Setup development envrionment</h3>
+<p>then we modify this project to make it more sweet  </p>
+<ul>
+<li>create source directory for client codes   </li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> app-client</div></pre></td></tr></table></figure>
+
+<p>for fullstack development concern, we can create source directories for shared codes and server codes  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> app-shared</div><div class="line"><span class="built_in">mkdir</span> app-server</div></pre></td></tr></table></figure>
+
+<ul>
+<li>add package.json  </li>
+</ul>
+<p>package.json  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">  "<span class="attribute">name</span>": <span class="value"><span class="string">"bearcat-cocos2d-js-example"</span></span>,</div><div class="line">  "<span class="attribute">version</span>": <span class="value"><span class="string">"0.0.1"</span></span>,</div><div class="line">  "<span class="attribute">dependencies</span>": <span class="value">{</span></div><div class="line">    "<span class="attribute">bearcat</span>": <span class="value"><span class="string">"0.4.x"</span></span></div><div class="line">  },</div><div class="line">  "<span class="attribute">devDependencies</span>": <span class="value">{</span></div><div class="line">    "<span class="attribute">grunt</span>": <span class="value"><span class="string">"~0.4.2"</span></span>,</div><div class="line">    "<span class="attribute">grunt-contrib-clean</span>": <span class="value"><span class="string">"0.5.x"</span></span>,</div><div class="line">    "<span class="attribute">grunt-bearcat-browser</span>": <span class="value"><span class="string">"0.x"</span></span>,</div><div class="line">    "<span class="attribute">grunt-browserify</span>": <span class="value"><span class="string">"3.2.x"</span></span></div><div class="line">  }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ul>
+<li>add gruntfile.js  </li>
+</ul>
+<p>gruntfile.js  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="pi">'use strict'</span>;</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span><span class="params">(grunt)</span> </span>{</div><div class="line">  </div><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-browserify'</span>);</div><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-contrib-clean'</span>);</div><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-bearcat-browser'</span>);</div><div class="line">  </div><div class="line">  <span class="keyword">var</span> src = [];</div><div class="line">  </div><div class="line">  <span class="comment">// Project configuration.</span></div><div class="line">  grunt.initConfig({</div><div class="line">    <span class="comment">// Metadata.</span></div><div class="line">    pkg: grunt.file.readJSON(<span class="string">'package.json'</span>),</div><div class="line">    clean: {</div><div class="line">      <span class="string">"coverage.html"</span>: {</div><div class="line">        src: [<span class="string">'coverage.html'</span>]</div><div class="line">      }</div><div class="line">    },</div><div class="line">    bearcat_browser: {</div><div class="line">      <span class="keyword">default</span>: {</div><div class="line">        dest: <span class="string">"bearcat-bootstrap.js"</span>,</div><div class="line">        context: <span class="string">"client-context.json"</span></div><div class="line">      }</div><div class="line">    },</div><div class="line">    <span class="comment">// browserify everything</span></div><div class="line">    browserify: {</div><div class="line">      standalone: {</div><div class="line">        src: [<span class="string">'client.js'</span>],</div><div class="line">        dest: <span class="string">'main.js'</span>,</div><div class="line">        options: {</div><div class="line"></div><div class="line">        }</div><div class="line">      }</div><div class="line">    }</div><div class="line">  });</div><div class="line">  </div><div class="line">  <span class="comment">// Default task.</span></div><div class="line">  grunt.registerTask(<span class="string">'default'</span>, [<span class="string">'clean'</span>, <span class="string">'bearcat_browser'</span>, <span class="string">'browserify'</span>]);</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<ul>
+<li>add client.js as the client main script  </li>
+</ul>
+<p>client.js  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span>(<span class="string">'./bearcat-bootstrap.js'</span>);</div><div class="line"><span class="keyword">var</span> bearcat = <span class="keyword">require</span>(<span class="string">'bearcat'</span>);</div><div class="line">window.bearcat = bearcat; <span class="comment">// using browserify to resolve npm modules</span></div><div class="line">  </div><div class="line">cc.game.onStart = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    cc.view.adjustViewPort(<span class="keyword">true</span>);</div><div class="line">    cc.view.setDesignResolutionSize(<span class="number">800</span>, <span class="number">450</span>, cc.ResolutionPolicy.SHOW_ALL);</div><div class="line">    cc.view.resizeWithBrowserSize(<span class="keyword">true</span>);</div><div class="line">    <span class="keyword">var</span> <span class="keyword">self</span> = this;</div><div class="line">    <span class="comment">//load resources</span></div><div class="line">    bearcat.createApp();</div><div class="line">    bearcat.<span class="keyword">use</span>([<span class="string">'helloWorldScene'</span>]);</div><div class="line">    bearcat.start(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="keyword">var</span> resourceUtil = bearcat.getBean(<span class="string">'resourceUtil'</span>);</div><div class="line">        <span class="keyword">var</span> g_resources = resourceUtil.getResources();</div><div class="line">        cc.LoaderScene.preload(g_resources, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">            <span class="keyword">var</span> helloWorldScene = bearcat.getBean(<span class="string">'helloWorldScene'</span>);</div><div class="line">            cc.director.runScene(helloWorldScene.get());</div><div class="line">        }, <span class="keyword">self</span>);</div><div class="line">    });</div><div class="line">  </div><div class="line">};</div><div class="line">  </div><div class="line">cc.game.run();</div></pre></td></tr></table></figure>
+
+<ul>
+<li>add client-context.json to manage codes to run for cocos2d-js  </li>
+</ul>
+<p>client-context.json  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    "<span class="attribute">name</span>": <span class="value"><span class="string">"bearcat-cocos2d-js-example"</span></span>,</div><div class="line">    "<span class="attribute">description</span>": <span class="value"><span class="string">"client context.json"</span></span>,</div><div class="line">    "<span class="attribute">scan</span>": <span class="value">[<span class="string">"app-client"</span>, <span class="string">"app-shared"</span>]</span>,</div><div class="line">    "<span class="attribute">beans</span>": <span class="value">[]</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>as we can see, we scan <strong><em>app-client</em></strong>, and <strong><em>app-shared</em></strong> for client codes   </p>
+<ul>
+<li>modify project.json, simply set the jsList to an empty array, for now we use bearcat and browserify  </li>
+</ul>
+<p>project.json  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    "<span class="attribute">project_type</span>": <span class="value"><span class="string">"javascript"</span></span>,</div><div class="line">  </div><div class="line">    "<span class="attribute">debugMode</span>": <span class="value"><span class="number">1</span></span>,</div><div class="line">    "<span class="attribute">showFPS</span>": <span class="value"><span class="literal">true</span></span>,</div><div class="line">    "<span class="attribute">frameRate</span>": <span class="value"><span class="number">60</span></span>,</div><div class="line">    "<span class="attribute">id</span>": <span class="value"><span class="string">"gameCanvas"</span></span>,</div><div class="line">    "<span class="attribute">renderMode</span>": <span class="value"><span class="number">0</span></span>,</div><div class="line">    "<span class="attribute">engineDir</span>": <span class="value"><span class="string">"frameworks/cocos2d-html5"</span></span>,</div><div class="line">  </div><div class="line">    "<span class="attribute">modules</span>": <span class="value">[<span class="string">"cocos2d"</span>]</span>,</div><div class="line">  </div><div class="line">    "<span class="attribute">jsList</span>": <span class="value">[]</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<ul>
+<li>install npm dependencies  </li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span></span></div></pre></td></tr></table></figure>
+
+<p>then you can use grunt workflow to generate <strong><em>bearcat-bootstrap.js</em></strong>, <strong><em>main.js</em></strong>  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grunt</div></pre></td></tr></table></figure>
+
+<p>since now, we have setted up the development envrionment with bearcat and browserify</p>
+<h3 id="Coding_with_bearcat">Coding with bearcat</h3>
+<h4 id="Add_helloWorldLayer">Add helloWorldLayer</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> HelloWorldLayer = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"helloWorldLayer"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">HelloWorldLayer.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = cc.Layer.extend({</div><div class="line">	    sprite: <span class="literal">null</span>,</div><div class="line">	    helloLabel: <span class="literal">null</span>,</div><div class="line">	    ctor: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	    }</div><div class="line">    });</div><div class="line">}</div><div class="line">  </div><div class="line">HelloWorldLayer.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">this</span>.ctor();</div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(HelloWorldLayer, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<p>as you can see, HelloWorldLayer is actually a factory bean for creating <strong><em>helloWorldLayer</em></strong><br>when get this helloWorldLayer bean, we simply call the <strong><em>get</em></strong> method to fetch the <strong><em>helloWorldLayer</em></strong>  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> HelloWorldLayer = bearcat.getBean(<span class="string">'helloWorldLayer'</span>);</div><div class="line"><span class="keyword">var</span> helloWorldLayer = HelloWorldLayer.<span class="keyword">get</span>(); <span class="comment">// fetch the layer instance</span></div></pre></td></tr></table></figure>
+
+<h4 id="Add_dependency">Add dependency</h4>
+<p>with this factory bean, we can resolve dependencies with <a href="http://bearcatjs.org/guide/dependency-injection.html" target="_blank" rel="external">bearcat dependency injection</a>  </p>
+<p>for example, we can resolve <strong><em>resourceUtil</em></strong> as its dependency to resolve asserts resources   </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> HelloWorldLayer = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"helloWorldLayer"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.$resourceUtil = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = <span class="literal">null</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/bearcatjs/bearcat-cocos2d-js-example/blob/master/app-client/util/resourceUtil.js" target="_blank" rel="external">resourceUtil.js</a>  </p>
+<h4 id="Implement_layer_logic">Implement layer logic</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">HelloWorldLayer.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = cc.Layer.extend({</div><div class="line">	    sprite: <span class="literal">null</span>,</div><div class="line">	    helloLabel: <span class="literal">null</span>,</div><div class="line">	    ctor: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">		    <span class="comment">// 1. super init first</span></div><div class="line">		    <span class="keyword">this</span>._super();</div><div class="line">  </div><div class="line">		    self.addCloseItem(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">		    self.addHelloWorldLabel(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">		    self.addSplashScreen(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">		    self.runAction(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">		    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">	    }</div><div class="line">    });</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>we can refactor the logic into stateless <strong><em>HelloWorldLayer</em></strong> factory bean prototype methods  </p>
+<ul>
+<li>call this._super();</li>
+<li>addCloseItem with this as its argument</li>
+<li>addHelloWorldLabel</li>
+<li>addSplashScreen</li>
+<li>runAction</li>
+</ul>
+<h4 id="Implement_concrete_layer_logic">Implement concrete layer logic</h4>
+<p>we can now use argument <strong><em>self</em></strong> to refer to ctor method’s <strong><em>this</em></strong><br>use <strong><em>this</em></strong> to get dependency for example <strong><em>this.$resourceUtil</em></strong><br>since this method is stateless, we can easily hot wrap it when needed  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">HelloWorldLayer.prototype.addCloseItem = <span class="function"><span class="keyword">function</span><span class="params">(self)</span> </span>{</div><div class="line">    <span class="keyword">var</span> res = this.<span class="variable">$resourceUtil</span>.getRes();</div><div class="line">  </div><div class="line">    <span class="comment">// 2. add a menu item with "X" image, which is clicked to quit the program</span></div><div class="line">    <span class="comment">// ask the window size</span></div><div class="line">    <span class="keyword">var</span> size = cc.winSize;</div><div class="line">  </div><div class="line">    <span class="comment">// add a "close" icon to exit the progress. it's an autorelease object</span></div><div class="line">    <span class="keyword">var</span> closeItem = <span class="keyword">new</span> cc.MenuItemImage(</div><div class="line">	    res.CloseNormal_png,</div><div class="line">	    res.CloseSelected_png,</div><div class="line">	    <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">		    cc.log(<span class="string">"Menu is clicked!"</span>);</div><div class="line">	    }, <span class="keyword">self</span>);</div><div class="line"></div><div class="line">    closeItem.attr({</div><div class="line">	    x: size.width - <span class="number">20</span>,</div><div class="line">	    y: <span class="number">20</span>,</div><div class="line">	    anchorX: <span class="number">0.5</span>,</div><div class="line">	    anchorY: <span class="number">0.5</span></div><div class="line">    });</div><div class="line">  </div><div class="line">    <span class="keyword">var</span> menu = <span class="keyword">new</span> cc.Menu(closeItem);</div><div class="line">    menu.x = <span class="number">0</span>;</div><div class="line">    menu.y = <span class="number">0</span>;</div><div class="line">    <span class="keyword">self</span>.addChild(menu, <span class="number">1</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>the whole example can be found on <a href="https://github.com/bearcatjs/bearcat-cocos2d-js-example" target="_blank" rel="external">bearcat-coscos2d-js-example</a>  </p>
+<h3 id="Deploy_and_run">Deploy and run</h3>
+<p>for web, it is deadly simple  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">cocos</span> run -p web</div></pre></td></tr></table></figure>
+
+<p>for android</p>
+<p>you should modify <strong><em>build-cfg.json</em></strong> file in <strong><em>frameworks/runtime-src/proj.android/build-cfg.json</em></strong>  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    "<span class="attribute">ndk_module_path</span>": <span class="value">[</span></div><div class="line">        <span class="string">"../../js-bindings"</span>,</div><div class="line">        <span class="string">"../../js-bindings/cocos2d-x"</span>,</div><div class="line">        <span class="string">"../../js-bindings/cocos2d-x/cocos"</span>,</div><div class="line">        <span class="string">"../../js-bindings/cocos2d-x/external"</span></div><div class="line">    ],</div><div class="line">    "<span class="attribute">copy_resources</span>": <span class="value">[{</span></div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../app-client"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"app-client"</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../app-shared"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"app-shared"</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../res"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"res"</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../main.js"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">""</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../project.json"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">""</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../js-bindings/bindings/script"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"script"</span></span></div><div class="line">    }]</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>as we can see, we remove copying the <strong><em>src</em></strong> directory, and add <strong><em>app-client</em></strong>, <strong><em>app-shared</em></strong> directories to be packed into android apk  </p>
+<p>then we can simply run </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">cocos</span> run -p android</div></pre></td></tr></table></figure>
+
+<p>that’s it  </p>
+
+    
+    <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
+</div>
+            
+        </div>
+
+        
+            <script src="/js/smooth-scroll.min.js"></script>
+            <script src="/js/common.js"></script>
+        
+
+    </body>
+</html>
