@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>bearcat 对 cocos2djs 支持 - bearcat</title>
+        <title>基于 bearcat 的 cocos2d-js 游戏开发 - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -81,15 +81,169 @@
             
                 <li><a href="/博客/bearcat-dao-release-0.2.0.html" class="sidebar-link">bearcat-dao 0.2.0 更新日志</a></li>
             
-                <li><a href="/博客/bearcat-cocos2djs.html" class="sidebar-link current">bearcat 对 cocos2djs 支持</a></li>
+                <li><a href="/博客/bearcat-cocos2djs.html" class="sidebar-link current">基于 bearcat 的 cocos2d-js 游戏开发</a></li>
             
         </ul>
     </div>
 </div>
 
 <div class="content 博客 with-sidebar">
-    <h1>bearcat 对 cocos2djs 支持</h1>
-    
+    <h1>基于 bearcat 的 cocos2d-js 游戏开发</h1>
+    <h2 id="概述">概述</h2>
+<p><a href="https://github.com/cocos2d/cocos2d-js" target="_blank" rel="external">cocos2d-js</a> 是一个开源的可用于web、native环境的游戏引擎，它是HTML5版本的 <a href="https://github.com/cocos2d/cocos2d-x" target="_blank" rel="external">cocos2d-x</a>。 cocos2d-js 包含两部分，一部分是用于web game的<a href="https://github.com/cocos2d/cocos2d-html5" target="_blank" rel="external">cocos2d-html5</a>，另一部分则是用于native game的 cocos2d-x javaScript binding (JSB)。cocos2d-js 提供了 cocos2d-html5 和 cocos2d-x jsb 兼容的 API，使得用cocos2d-js编写的game可以无缝、不需要任何修改的就可以跑在基于cocos2d-x jsb的native环境里。  </p>
+<p>基于javaScript技术栈，在开发效率上有不少的优势<br>众所周知，web开发是相当高效的，开发过程无需编译、打包，直接刷新下浏览器即可，而且现在的浏览器都支持强大的开发工具，比如<a href="https://developer.chrome.com/devtools" target="_blank" rel="external">chrome dev tools</a>，包含了比如单步调试、网络数据访问、动态修改、内存/CPU性能分析、交互式控制台。    </p>
+<p>cocos2d-js 正是基于这一点，通过上层提供统一兼容API，快速的迭代，无缝的跨平台部署，进行游戏产出。  </p>
+<p>不过，在追求开发效率的道路上还不能仅仅这样就可以满足了，由于是基于javaScript栈开发，就需要考虑比如：  </p>
+<ul>
+<li>怎么进行依赖管理？</li>
+<li>如何使用第三方库？</li>
+<li>怎么做单元测试？</li>
+<li>代码如何进行复用？</li>
+</ul>
+<p>接下来会针对这些问题，提出探讨，并给出相应的解决方案，最后会提供一个 cocos2d-js 的 example 以供参考  </p>
+<h2 id="cocos2d-js_开发存在的问题探讨">cocos2d-js 开发存在的问题探讨</h2>
+<h3 id="依赖管理">依赖管理</h3>
+<p>javaScript 依赖管理是一个老生长谈的话题，因为javaScript语言本身到目前为止还没推出统一的模块、依赖管理的机制（es6 module还需要好久），cocos2d-js 在这方面使用的是：  </p>
+<ul>
+<li>依赖管理挂载在 global 对象下面</li>
+<li>脚本加载用 project.json 里的 jsList进行手动配置</li>
+</ul>
+<p>基于全局的依赖管理作为引擎这样子使用问题还不大，因为我们最终使用cocos2d-js的地方都从cc对象获取即可，但是如果是你自己的应用层代码呢？  </p>
+<p>很明显，自己在做应用（游戏）开发时，要尽量避免使用全局变量，使用全局变量则必须小心，要考虑所有使用到的地方，否则一步留神就改出了问题，同时使用全局变量，对于一个文件依赖全局变量很难一眼看出这个文件原来依赖了某个全局变量，这样子尤其是在项目的后期带来了不少的麻烦，更不利于多人协作的项目    </p>
+<p>脚本加载需要手动配置，也是存在问题的。如果文件之间相互有加载顺序的依赖关系呢？（比如a.js依赖于b.js那么b.js就需要先加载完才行）这样一来就必须小心的写好jsList里面的顺序，否则就加载不成功了</p>
+<p>因此，一个完善的依赖管理机制还是需要的。解决这个问题的关键是要把脚本的加载过程与脚本之间的依赖处理过程分开。 </p>
+<p>目前也有不少解决方案，AMD、CommonJS、Dependency Injection，关于这三种方式的比较与讨论可以参考另外一篇博文 <a href="http://bearcatjs.org/%E5%8D%9A%E5%AE%A2/index.html" target="_blank" rel="external">javaScript 依赖管理</a><br>可以看到基于 Dependency Injection 模式进行管理，可以极大程度的松散耦合，前后端代码进行复用，并且可以直接使用基于CommonJS的模块（npm module）。目前，bearcat 已经对 cocos2d-x jsb 环境进行了支持， 意味着我们可以编写同一套代码逻辑，然后跑在浏览器和jsb环境中，当然也可以在node.js中进行复用。而 AMD（只适用于浏览器）、CommonJS（依赖于文件I/O，浏览器环境受到限制） 都不能很好的适用于所有的环境，也包括cocos2d-js的jsb环境    </p>
+<h3 id="第三方库的使用">第三方库的使用</h3>
+<p>第三方库其实也是一种依赖，目前最大的javaScript module生态圈是npm，我们可以使用 <a href="http://browserify.org/" target="_blank" rel="external">browserify</a> 直接使用 npm 里面现有的 module，而非拷贝代码，然后手动添加，如果要升级第三方库呢？再拷贝，再添加。明显不太优雅。使用 browserify 的时候，配置个 package.json，然后添加依赖，build一下即可，由于依赖并不是频繁更改的，因此这个browerify的build的过程也是可以接受的  </p>
+<h3 id="单元测试">单元测试</h3>
+<p>使用全局global变量的情况下是很难做单元测试的，要做单元测试首先引用的全局变量要是一个拷贝，这样子可以防止由于在这里的单元测试修改了全局变量，而造成在另外的单元测试里面失败。<br>比如：  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span><span class="params">(path, cb)</span> </span>{</div><div class="line">    fs.readFile(path, <span class="string">'utf-8'</span>, <span class="function"><span class="keyword">function</span><span class="params">(err, content)</span> </span>{</div><div class="line">        cb(<span class="literal">null</span>, <span class="built_in">JSON</span>.parse(content));</div><div class="line">    })</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这里有几个依赖？怎么做单元测试？<br>（依赖了 fs 和全局的 JSON）  </p>
+<p>Dependency Injection则没有这个问题，因为依赖是传入的，并不是自己获取的，传入的这个依赖可以很方便的进行mock进行单元测试。</p>
+<p>换成依赖注入则一目了然  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span><span class="params">(fs, JSON)</span> </span>{</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(path, cb)</span> </span>{       </div><div class="line">         fs.readFile(path, <span class="string">'utf-8'</span>, <span class="function"><span class="keyword">function</span><span class="params">(err, content)</span> </span>{</div><div class="line">            cb(<span class="literal">null</span>, <span class="built_in">JSON</span>.parse(content));</div><div class="line">        })</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>对于javaScript，我们可以使用 <a href="https://github.com/mochajs/mocha" target="_blank" rel="external">mocha</a> 作为测试驱动框架，使用 <a href="https://github.com/tj/should.js" target="_blank" rel="external">should</a> 作为断言库  </p>
+<h3 id="代码复用">代码复用</h3>
+<p>由于我们基于javaScript技术栈，代码共享肯定能带来不少好处，游戏开发中不少的逻辑是可以直接复用的，比如model定义、数据的校验、寻路逻辑等等，这里的代码复用不是指的代码拷贝，真正的复用是同一个文件直接在客户端和服务端引用    </p>
+<h2 id="cocos2d-js_+_bearcat">cocos2d-js + bearcat</h2>
+<p>接下来会以改造 cocos2d-js 官方 helloworld 例子为例，说明如何使用 cocos2d-js + bearcat 来进行开发  </p>
+<h3 id="创建_cocos2d-js_项目">创建 cocos2d-js 项目</h3>
+<p>直接使用 cocos 命令    </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cocos new <span class="operator">-l</span> js bearcat_cocos2d_js_example</div></pre></td></tr></table></figure>
+
+
+
+<p>然后在web上跑起来  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> bearcat_cocos2d_js_example/</div><div class="line">cocos run -p web</div></pre></td></tr></table></figure>
+
+<h3 id="配置项目">配置项目</h3>
+<h4 id="添加_package-json">添加 package.json</h4>
+<p>package.json 中，我们可以填写需要依赖的第三方库，然后利用npm进行库的维护与管理  </p>
+<p>这里我们依赖库需要 bearcat，开发库需要 grunt 以及相关 grunt task<br>package.json  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">  "<span class="attribute">name</span>": <span class="value"><span class="string">"bearcat-cocos2d-js-example"</span></span>,</div><div class="line">  "<span class="attribute">version</span>": <span class="value"><span class="string">"0.0.1"</span></span>,</div><div class="line">  "<span class="attribute">dependencies</span>": <span class="value">{</span></div><div class="line">    "<span class="attribute">bearcat</span>": <span class="value"><span class="string">"0.4.x"</span></span></div><div class="line">  },</div><div class="line">  "<span class="attribute">devDependencies</span>": <span class="value">{</span></div><div class="line">    "<span class="attribute">grunt</span>": <span class="value"><span class="string">"~0.4.2"</span></span>,</div><div class="line">    "<span class="attribute">grunt-bearcat-browser</span>": <span class="value"><span class="string">"0.x"</span></span>,</div><div class="line">    "<span class="attribute">grunt-browserify</span>": <span class="value"><span class="string">"3.2.x"</span></span></div><div class="line">  }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>添加完依赖，我们执行 npm 命令，安装依赖  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span></span></div></pre></td></tr></table></figure>
+
+<h4 id="添加_gruntfile-js">添加 gruntfile.js</h4>
+<p>利用 <a href="http://gruntjs.com/" target="_blank" rel="external">grunt</a> 我们可以建立起自动化的开发构建发布流程<br>比如，我们可以配置 browserify build task，bearcat 生成 bearcat-bootstrap.js task  </p>
+<p>使用grunt前，需要全局安装grunt  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm <span class="operator"><span class="keyword">install</span> -g grunt</span></div></pre></td></tr></table></figure>
+
+<p>gruntfile.js  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="pi">'use strict'</span>;</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span><span class="params">(grunt)</span> </span>{</div><div class="line">  </div><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-browserify'</span>);</div><div class="line">  grunt.loadNpmTasks(<span class="string">'grunt-bearcat-browser'</span>);</div><div class="line">  </div><div class="line">  <span class="keyword">var</span> src = [];</div><div class="line">  </div><div class="line">  <span class="comment">// Project configuration.</span></div><div class="line">  grunt.initConfig({</div><div class="line">    <span class="comment">// Metadata.</span></div><div class="line">    pkg: grunt.file.readJSON(<span class="string">'package.json'</span>),</div><div class="line">    bearcat_browser: {</div><div class="line">      <span class="keyword">default</span>: {</div><div class="line">        dest: <span class="string">"bearcat-bootstrap.js"</span>,</div><div class="line">        context: <span class="string">"client-context.json"</span></div><div class="line">      }</div><div class="line">    },</div><div class="line">    <span class="comment">// browserify everything</span></div><div class="line">    browserify: {</div><div class="line">      standalone: {</div><div class="line">        src: [<span class="string">'client.js'</span>],</div><div class="line">        dest: <span class="string">'main.js'</span>,</div><div class="line">        options: {</div><div class="line"></div><div class="line">        }</div><div class="line">      }</div><div class="line">    }</div><div class="line">  });</div><div class="line">  </div><div class="line">  <span class="comment">// Default task.</span></div><div class="line">  grunt.registerTask(<span class="string">'default'</span>, [<span class="string">'bearcat_browser'</span>, <span class="string">'browserify'</span>]);</div><div class="line">};</div></pre></td></tr></table></figure>
+
+<p>这里加入了 browserify 和 bearcat 的 task，然后我们执行grunt命令即可运行这些tasks<br>browserify 里配置 source 文件 client.js，目标文件为 main.j。client.js 其实就是之前的 main.js 文件，只不过使用 browserify 提供的 require 加载了第三方库，main.js 则是已经打包好第三库的主文件，供cocos2d-js作为项目入口文件加载<br>bearcat 里配置根据 client-context.json 来生成 bearcat-bootstrap.js 以便支持script的加载  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grunt</div></pre></td></tr></table></figure>
+
+<p>如果还想加入单元测试、代码覆盖率的工作流，加入相关mocha、coverage task即可  </p>
+<h4 id="创建源码文件夹">创建源码文件夹</h4>
+<p>由于是javaScript技术栈，考虑前后端代码共享，那么我们可以把源码文件夹分成三个，比如  </p>
+<p>创建 client 源码文件夹  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> app-client</div></pre></td></tr></table></figure>
+
+<p>创建 server 源码文件夹  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> app-server</div></pre></td></tr></table></figure>
+
+<p>创建共享源码文件夹  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> app-shared</div></pre></td></tr></table></figure>
+
+<h4 id="修改_project-json_文件">修改 project.json 文件</h4>
+<p>这里采用bearcat进行script脚本加载与依赖管理，因此修改 project.json 文件，把 jsList 的配置置为空数组  </p>
+<p>project.json  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    "<span class="attribute">project_type</span>": <span class="value"><span class="string">"javascript"</span></span>,</div><div class="line">  </div><div class="line">    "<span class="attribute">debugMode</span>": <span class="value"><span class="number">1</span></span>,</div><div class="line">    "<span class="attribute">showFPS</span>": <span class="value"><span class="literal">true</span></span>,</div><div class="line">    "<span class="attribute">frameRate</span>": <span class="value"><span class="number">60</span></span>,</div><div class="line">    "<span class="attribute">id</span>": <span class="value"><span class="string">"gameCanvas"</span></span>,</div><div class="line">    "<span class="attribute">renderMode</span>": <span class="value"><span class="number">0</span></span>,</div><div class="line">    "<span class="attribute">engineDir</span>": <span class="value"><span class="string">"frameworks/cocos2d-html5"</span></span>,</div><div class="line">  </div><div class="line">    "<span class="attribute">modules</span>": <span class="value">[<span class="string">"cocos2d"</span>]</span>,</div><div class="line">  </div><div class="line">    "<span class="attribute">jsList</span>": <span class="value">[]</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h4 id="添加_client-context-json">添加 client-context.json</h4>
+<p>这个是 bearcat 在 client 端的配置，配置着需要扫描的源文件路径，这里我们扫描 app-client 与 app-shared 这两个文件夹，相应的，对于node.js开发，有一个context.json，里面配置的扫描文件夹则是 app-server 与 app-shared  </p>
+<p>client-context.json  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    "<span class="attribute">name</span>": <span class="value"><span class="string">"bearcat-cocos2d-js-example"</span></span>,</div><div class="line">    "<span class="attribute">description</span>": <span class="value"><span class="string">"client context.json"</span></span>,</div><div class="line">    "<span class="attribute">scan</span>": <span class="value">[<span class="string">"app-client"</span>, <span class="string">"app-shared"</span>]</span>,</div><div class="line">    "<span class="attribute">beans</span>": <span class="value">[]</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h4 id="添加_client-js">添加 client.js</h4>
+<p>client.js 就是之前的main.js，只不过使用了browserify进行第三方库依赖、使用bearcat进行业务层代码的管理  </p>
+<p>client.js  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span>(<span class="string">'./bearcat-bootstrap.js'</span>);</div><div class="line"><span class="keyword">var</span> bearcat = <span class="keyword">require</span>(<span class="string">'bearcat'</span>); <span class="comment">// 依赖bearcat库</span></div><div class="line">window.bearcat = bearcat; <span class="comment">// using browserify to resolve npm modules</span></div><div class="line">  </div><div class="line">cc.game.onStart = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    cc.view.adjustViewPort(<span class="keyword">true</span>);</div><div class="line">    cc.view.setDesignResolutionSize(<span class="number">800</span>, <span class="number">450</span>, cc.ResolutionPolicy.SHOW_ALL);</div><div class="line">    cc.view.resizeWithBrowserSize(<span class="keyword">true</span>);</div><div class="line">    <span class="keyword">var</span> <span class="keyword">self</span> = this;</div><div class="line">    <span class="comment">//load resources</span></div><div class="line">    bearcat.createApp();</div><div class="line">    bearcat.<span class="keyword">use</span>([<span class="string">'helloWorldScene'</span>]);</div><div class="line">    bearcat.start(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="keyword">var</span> resourceUtil = bearcat.getBean(<span class="string">'resourceUtil'</span>);</div><div class="line">        <span class="keyword">var</span> g_resources = resourceUtil.getResources();</div><div class="line">        cc.LoaderScene.preload(g_resources, <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">            <span class="keyword">var</span> helloWorldScene = bearcat.getBean(<span class="string">'helloWorldScene'</span>);</div><div class="line">            cc.director.runScene(helloWorldScene.get());</div><div class="line">        }, <span class="keyword">self</span>);</div><div class="line">    });</div><div class="line">  </div><div class="line">};</div><div class="line">  </div><div class="line">cc.game.run();</div></pre></td></tr></table></figure>
+
+<p>至此客户端项目环境已经配置完毕，我们可以愉快的coding  </p>
+<h3 id="使用bearcat编程">使用bearcat编程</h3>
+<h4 id="添加_HelloWorldLayer">添加 HelloWorldLayer</h4>
+<p>使用cocos2d-js创建一个layer相当容易  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> HelloWorldLayer = cc.Layer.extend({</div><div class="line">    ctor: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  </div><div class="line">    }</div><div class="line">});</div></pre></td></tr></table></figure>
+
+<p>我们继承cc.Layer，然后在子类里实现我们具体的逻辑  </p>
+<p>但是这个 HelloWorldLayer 放在哪儿呢？全局吗？当然 say no！</p>
+<p>在bearcat里，你可以编写一个管理HelloWorldLayer的factory bean也即工厂类，由这个factory bean维护着这个HelloWorldLayer，需要时，依赖这个factory bean，然后通过factory bean的工厂方法获取HelloWorldLayer的实例，同时，如果HelloWorldLayer需要依赖其他的script文件，也在factory bean通过bearcat提供的依赖注入来进行即可  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// HelloWorldLayer 工厂bean</span></div><div class="line"><span class="keyword">var</span> HelloWorldLayer = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"helloWorldLayer"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = <span class="literal">null</span>;</div><div class="line">    <span class="comment">// 如果需要依赖，直接在这里用bearcat依赖注入</span></div><div class="line">    <span class="comment">// this.$xxxUtil = null;</span></div><div class="line">}</div><div class="line">  </div><div class="line">HelloWorldLayer.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">    <span class="comment">// 初始化HelloWorldLayer</span></div><div class="line">    <span class="keyword">this</span>.ctor = cc.Layer.extend({</div><div class="line">      sprite: <span class="literal">null</span>,</div><div class="line">      helloLabel: <span class="literal">null</span>,</div><div class="line">      ctor: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">      }</div><div class="line">    });</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="comment">// 工厂方法</span></div><div class="line">HelloWorldLayer.prototype.get = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">this</span>.ctor();</div><div class="line">}</div><div class="line">  </div><div class="line">bearcat.module(HelloWorldLayer, <span class="keyword">typeof</span> <span class="built_in">module</span> !== <span class="string">'undefined'</span> ? <span class="built_in">module</span> : {});</div></pre></td></tr></table></figure>
+
+<h4 id="添加依赖">添加依赖</h4>
+<p>在HelloWorldLayer中我们需要依赖一个resourceUtil来处理资源的管理，那么我们可以简单的这样做就行  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> HelloWorldLayer = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">this</span>.$id = <span class="string">"helloWorldLayer"</span>;</div><div class="line">    <span class="keyword">this</span>.$init = <span class="string">"init"</span>;</div><div class="line">    <span class="keyword">this</span>.$resourceUtil = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = <span class="literal">null</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/bearcatjs/bearcat-cocos2d-js-example/blob/master/app-client/util/resourceUtil.js" target="_blank" rel="external">resourceUtil.js</a>  </p>
+<p>使用时，我们直接用 this.$resourceUtil 即可拿到依赖，调用里面的方法  </p>
+<h4 id="实现逻辑">实现逻辑</h4>
+<p>在HelloWorldLayer中，我们可能有这样的逻辑  </p>
+<ul>
+<li>添加一个close按钮</li>
+<li>添加helloWorld标签</li>
+<li>添加splash背景</li>
+<li>添加action动画</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">HelloWorldLayer.prototype.init = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">    <span class="keyword">var</span> self = <span class="keyword">this</span>;</div><div class="line">    <span class="keyword">this</span>.ctor = cc.Layer.extend({</div><div class="line">      sprite: <span class="literal">null</span>,</div><div class="line">      helloLabel: <span class="literal">null</span>,</div><div class="line">      ctor: <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        <span class="comment">// 1. super init first</span></div><div class="line">        <span class="keyword">this</span>._super();</div><div class="line">  </div><div class="line">        self.addCloseItem(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">        self.addHelloWorldLabel(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">        self.addSplashScreen(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">        self.runAction(<span class="keyword">this</span>);</div><div class="line">  </div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">      }</div><div class="line">    });</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>然后我们可以这么进行抽象与封装，把每个逻辑代理到factory bean的无状态的方法上去，并把this context作为参数传入<br>这样子实现好处也是明显的：  </p>
+<ul>
+<li>ctor函数里的逻辑进行了函数封装，便于后期维护</li>
+<li>每个封装的函数都是无状态的，可以轻松实现component，来进行代码复用<br>在这里就是ui组件的复用（当然，对于ui，我们已经有了cocosstudio来进行编辑生成，而不用自己一个个去编写代码，但是代码实现的思路是一致的）  </li>
+</ul>
+<blockquote>
+<p>时刻不忘代码的可维护性、复用性  </p>
+</blockquote>
+<h4 id="实现具体逻辑">实现具体逻辑</h4>
+<p>实现就大胆使用cocos2d-js里提供的各种方法即可，这里的self参数则是ctor里的this context  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">HelloWorldLayer.prototype.addCloseItem = <span class="function"><span class="keyword">function</span><span class="params">(self)</span> </span>{</div><div class="line">	<span class="comment">// 获取 resourceUtil 依赖</span></div><div class="line">    <span class="keyword">var</span> res = this.<span class="variable">$resourceUtil</span>.getRes();</div><div class="line">  </div><div class="line">    <span class="comment">// 2. add a menu item with "X" image, which is clicked to quit the program</span></div><div class="line">    <span class="comment">// ask the window size</span></div><div class="line">    <span class="keyword">var</span> size = cc.winSize;</div><div class="line">  </div><div class="line">    <span class="comment">// add a "close" icon to exit the progress. it's an autorelease object</span></div><div class="line">    <span class="keyword">var</span> closeItem = <span class="keyword">new</span> cc.MenuItemImage(</div><div class="line">      res.CloseNormal_png,</div><div class="line">      res.CloseSelected_png,</div><div class="line">      <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">        cc.log(<span class="string">"Menu is clicked!"</span>);</div><div class="line">      }, <span class="keyword">self</span>);</div><div class="line"></div><div class="line">    closeItem.attr({</div><div class="line">      x: size.width - <span class="number">20</span>,</div><div class="line">      y: <span class="number">20</span>,</div><div class="line">      anchorX: <span class="number">0.5</span>,</div><div class="line">      anchorY: <span class="number">0.5</span></div><div class="line">    });</div><div class="line">  </div><div class="line">    <span class="keyword">var</span> menu = <span class="keyword">new</span> cc.Menu(closeItem);</div><div class="line">    menu.x = <span class="number">0</span>;</div><div class="line">    menu.y = <span class="number">0</span>;</div><div class="line">    <span class="keyword">self</span>.addChild(menu, <span class="number">1</span>);</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>其它代码也类似，不一一说明，完整例子在 <a href="https://github.com/bearcatjs/bearcat-cocos2d-js-example" target="_blank" rel="external">bearcat-coscos2d-js-example</a>  </p>
+<h4 id="部署与运行">部署与运行</h4>
+<p>写完代码，执行 grunt 进行构建  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grunt</div></pre></td></tr></table></figure>
+
+<p>对于web平台，直接执行cocos命令  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">cocos</span> run -p web</div></pre></td></tr></table></figure>
+
+<p>对于android平台，则需要修改 cocos2d-js 库下的 <strong><em>frameworks/runtime-src/proj.android/build-cfg.json</em></strong> 文件<br>把我们自定义的源代码文件添加进打包apk配置中  </p>
+<p>build-cfg.json  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    "<span class="attribute">ndk_module_path</span>": <span class="value">[</span></div><div class="line">        <span class="string">"../../js-bindings"</span>,</div><div class="line">        <span class="string">"../../js-bindings/cocos2d-x"</span>,</div><div class="line">        <span class="string">"../../js-bindings/cocos2d-x/cocos"</span>,</div><div class="line">        <span class="string">"../../js-bindings/cocos2d-x/external"</span></div><div class="line">    ],</div><div class="line">    "<span class="attribute">copy_resources</span>": <span class="value">[{</span></div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../app-client"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"app-client"</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../app-shared"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"app-shared"</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../res"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"res"</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../main.js"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">""</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../../project.json"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">""</span></span></div><div class="line">    }, {</div><div class="line">        "<span class="attribute">from</span>": <span class="value"><span class="string">"../../js-bindings/bindings/script"</span></span>,</div><div class="line">        "<span class="attribute">to</span>": <span class="value"><span class="string">"script"</span></span></div><div class="line">    }]</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这里我们添加了 app-client 与 app-shared 文件夹  </p>
+<p>然后，我们就可以直接用cocos命令编译部署到android设备（模拟器）上  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="title">cocos</span> run -p android</div></pre></td></tr></table></figure>
+
+<p>ios 平台，由于没有mac，暂时无法测试，还望读到这的同学实际测试下，并给予反馈  </p>
+<h2 id="总结">总结</h2>
+<p>cocos2d-js非常不错，基于javaScript我们可以用一份代码就可以发布到web、pc、android、ios等平台上，大大减少了开发成本。当然cocos2d-js开发并不是非常完美，这其中也有javaScript这门语言本身的不足。本文就对这些问题进行了探讨，并给出了使用bearcat来编写cocos2d-js项目的例子，抛砖望引玉，enjoy coding with bearcat    </p>
+
     
     <div id="disqus_thread"></div>
 	<script type="text/javascript">
