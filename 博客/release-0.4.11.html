@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>bearcat 0.3.14 更新日志 - bearcat</title>
+        <title>bearcat 0.4.11 更新日志 - bearcat</title>
         <meta charset="utf-8">
         <meta name="description" content="bearcat - magic, expressive javaScript objects powered world.">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -75,7 +75,7 @@
             
                 <li><a href="/博客/release-0.3.6.html" class="sidebar-link">bearcat 0.3.6 更新日志</a></li>
             
-                <li><a href="/博客/release-0.3.14.html" class="sidebar-link current">bearcat 0.3.14 更新日志</a></li>
+                <li><a href="/博客/release-0.3.14.html" class="sidebar-link">bearcat 0.3.14 更新日志</a></li>
             
                 <li><a href="/博客/release-0.4.0.html" class="sidebar-link">bearcat 0.4.0 更新日志</a></li>
             
@@ -83,19 +83,29 @@
             
                 <li><a href="/博客/bearcat-cocos2djs.html" class="sidebar-link">基于 bearcat 的 cocos2d-js 游戏开发</a></li>
             
-                <li><a href="/博客/release-0.4.11.html" class="sidebar-link">bearcat 0.4.11 更新日志</a></li>
+                <li><a href="/博客/release-0.4.11.html" class="sidebar-link current">bearcat 0.4.11 更新日志</a></li>
             
         </ul>
     </div>
 </div>
 
 <div class="content 博客 with-sidebar">
-    <h1>bearcat 0.3.14 更新日志</h1>
-    <h2 id="优化一致性配置">优化一致性配置</h2>
-<p>本次升级主要是优化了bearcat提供的一致性配置<br>之前在把配置依赖注入到bean中，需要指定属性名称为 $V 开头的，现在不需要了，直接用 ${} 占位符的value属性即可  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">	<span class="keyword">this</span>.$Vnum = <span class="string">"${car.vnum}"</span>;</div><div class="line">	<span class="keyword">this</span>.num = <span class="string">"${car.num}"</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+    <h1>bearcat 0.4.11 更新日志</h1>
+    <h2 id="热更新">热更新</h2>
+<p>本次升级主要是加强了热更新功能，添加了对热添加文件、热给对象添加属性依赖的支持</p>
+<h2 id="添加文件">添加文件</h2>
+<p>直接添加文件，bearcat 会把它动态加入 bearcat IoC 容器中</p>
+<h2 id="添加属性依赖">添加属性依赖</h2>
+<p>比如之前有这么个bean  </p>
+<p>app/car.js</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'run hot car...'</span>);</div><div class="line">	<span class="keyword">return</span> <span class="string">'car hot'</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
 
-<p>更多详情还请看官方文档 <a href="http://bearcatjs.org/guide/consistent-configuration.html" target="_blank" rel="external">bearcat consistent configuration</a></p>
+<p>然后动态给 Car 添加 wheel 的依赖  </p>
+<p>app/car.js</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">	<span class="keyword">this</span>.$wheel = <span class="literal">null</span>;</div><div class="line">}</div><div class="line">  </div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'run hot car...'</span>);</div><div class="line">	<span class="keyword">this</span>.$wheel.run();</div><div class="line">	<span class="keyword">return</span> <span class="string">'car hot'</span>;</div><div class="line">}</div><div class="line">  </div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
+
+<p>直接添加即可，bearcat 会自动解析添加的依赖，并给所有对象实例添加 $wheel 依赖（实现原理是基于动态给prototype链挂上了 $wheel getter 函数）</p>
+<p>更多详情还请看官方文档 <a href="http://bearcatjs.org/topic/index.html" target="_blank" rel="external">bearcat hot reload</a></p>
 
     
     <div id="disqus_thread"></div>

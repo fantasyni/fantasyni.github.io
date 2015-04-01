@@ -94,7 +94,7 @@
 
 <ul>
 <li>BEARCAT_HOT: setup ‘on’ to turn on bearcat hot code reload</li>
-<li>BEARCAT_HPATH: setup hot reload path, usually it is the scan source directory(app by default)</li>
+<li>BEARCAT_HPATH: setup hot reload path(s), usually it is the scan source directory(app by default)</li>
 </ul>
 <h2 id="Watch_directory">Watch directory</h2>
 <p>Bearcat will watch your application runtime source directory by default it is <strong><em>app</em></strong>, when it’is updated, bearcat will do hot reload for the updated files  </p>
@@ -102,6 +102,13 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">}</div><div class="line"></div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'run hot car...'</span>);</div><div class="line">	<span class="keyword">return</span> <span class="string">'car hot'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
 
 <p>Because bearcat updates the <strong><em>prototype</em></strong>, the updated files need to provide the updated bean’s <strong><em>id</em></strong> and <strong><em>func</em></strong>, to imply which bean need to be updated and the newest prototype function definitions.    </p>
+<h3 id="Add_file">Add file</h3>
+<p>when hot adding files, bearcat will add this file into bearcat IoC container </p>
+<h3 id="Add_attribute_dependency">Add attribute dependency</h3>
+<p>app/car.js</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Car = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="keyword">this</span>.$id = <span class="string">"car"</span>;</div><div class="line">	<span class="keyword">this</span>.$wheel = <span class="literal">null</span>;</div><div class="line">}</div><div class="line"></div><div class="line">Car.prototype.run = <span class="function"><span class="keyword">function</span><span class="params">()</span> </span>{</div><div class="line">	<span class="built_in">console</span>.log(<span class="string">'run hot car...'</span>);</div><div class="line">	<span class="keyword">this</span>.$wheel.run();</div><div class="line">	<span class="keyword">return</span> <span class="string">'car hot'</span>;</div><div class="line">}</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure>
+
+<p>suppose you want car with a <strong><em>wheel</em></strong> dependency, just add it, bearcat will hot add this dependency for all Car instances</p>
 <h2 id="reload_events">reload events</h2>
 <p>listen to bearcat <strong><em>reload</em></strong> event, when watch codes changed, it will be fired  </p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">bearcat.<span class="keyword">on</span>(<span class="string">'reload'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span></div><div class="line">	console.<span class="built_in">log</span>(<span class="string">'reload occured...'</span>);</div><div class="line">});</div></pre></td></tr></table></figure>
