@@ -151,6 +151,11 @@
 <li>prefix : set the attribute with id = prefix + attribute name, to fill up with resultSet data</li>
 <li>constraint : set the constraint with primitive constraints, like this.$constraint = “$myNotNull”;  </li>
 </ul>
+<h3 id="Special_attribute">Special attribute</h3>
+<ul>
+<li>$V : $V prefixed attribute will be replaced by the specific environment configuration, like this.$Vnum = “${car.vnum}”;  </li>
+<li>$N : $N prefixed attribute specifies the namespace, like this.$Ncar = “app:car”;<br><strong><em>app</em></strong> is the namespace, <strong><em>car</em></strong> is the bean id  </li>
+</ul>
 
     
     <div class="footer">Caught a mistake or want to contribute to the documentation? <a href="https://github.com/bearcatjs/bearcatjs.org" target="_blank">Fork this site on Github</a>!</div>
